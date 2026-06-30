@@ -1,0 +1,328 @@
+python3 provider_download_assignment.py \
+       "4013,6037" "Check_1" "SAMPLE" "8" "user1" \
+       '{"1": {"parentOrganization": "Org A", "planBidIds": "H0000_001_0", "networkIds": "100001"}}' \
+       '{"2": {"parentOrganization": "Org B", "planBidIds": "H0000_002_0", "networkIds": "100002"}}' \
+       "Org A" "Org B" "1" "2" "HMO/HMO-POS" "2"
+
+
+
+python3 provider_count_assignment.py \
+       "4013,6037" "Check_1" "SAMPLE" "8" "user1" \
+       '{"1": {"parentOrganization": "Org A", "planBidIds": "H0000_001_0", "networkIds": "100001"}}' \
+       '{"2": {"parentOrganization": "Org B", "planBidIds": "H0000_002_0", "networkIds": "100002"}}' \
+       "Org A" "Org B" "1" "2" "HMO/HMO-POS" "2"
+
+
+
+  ## What exists today
+  Two independent scripts that:
+  1. Each read the same IND parquet files + ORG CSV files from disk (serial, per-file)
+  2. Each join the same two score CSVs
+  3. Both compute common/unique NPI flags via `groupby.transform('nunique')`
+  4. Count script: aggregates into 3 CSV tables; Download script: writes per-provider CSV+parquet
+  5. Both silently swallow all exceptions
+
+  ## Architecture to implement (from solution_approach_map.md)
+  - **DuckDB core + Polars I/O**: DuckDB does all analytical work (pushdown filter on parquet, SQL joins, window functions for flags, GROUP BY for aggregation). Polars writes output files.
+  - **One job, two output builders**: Single read+clean+score-join pass, branching at the end into count builder (→ 3 CSV tables) and download builder (→ CSV + parquet).
+  - **Single data load**: IND and ORG files read ONCE, not twice.
+
+  ## Bugs to fix (from solution_approach_map.md)
+  1. **Dead empty-guard**: In `load_compare_files`, `if compare_ind_df.empty` assigns to `base_ind_df` not `compare_ind_df`. Fix the variable name.
+  2. **NameError on empty compare list**: `final_data_ind`/`final_data_org` only bound inside the for-loop, used after. Guard with early return if list is empty.
+  3. **Swallowed failure**: `except Exception as e` captures `error_message` then does nothing. Fix to call `emit_error(traceback.format_exc())` and return None.
+  4. **Magic number**: `hosp_nan = [208546]` — keep but add a comment.
+
+  ## Key schemas (confirmed from inspection)
+
+  **IND parquet columns** (dtype):
+  ```
+  npi(int64), type, presentation_name, first_name, last_name,
+  network_id(int64), network_name, "Address First Line", "Parent_Organization",
+  location_confidence, location_confidence_address_level, specialty_category,
+  specialty_name, specialty_subspecialty, specialty_code, "Specialty Flag",
+  "New Flag", city, state, zip_code(str), county_name,
+  "FIPS State County Code"(int64), "Specialty Description", "Is_Dual_Provider",
+  "Affiliation ID"(int64), "Affiliation Presentation Name"
+  ```
+
+  **ORG CSV columns** (dtype):
+  ```
+  npi(int64), type, presentation_name, first_name(float/NaN), last_name(float/NaN),
+  network_id(int64), network_name, carrier_name, specialty_category, specialty_name,
+  specialty_subspecialty, specialty_code(int64), "New Flag", city, state,
+  zip_code(int64), county_name, "FIPS State County Code"(int64),
+  "Address First Line", Status
+  ```
+
+  **Score IND columns**: `NPI, "New Flag", "County FIPS", "Cost Score", "Quality Score", Specialty, "NPI Score", "MA Utilization Score", "FFS Utilization Score", "Quality color indicator"`
+
+  **Score ORG columns**: `npi, "Address First Line", state, "FIPS State County Code", "Quality Score", "Cost Score", "FFS Utilization Score", "MA Utilization Score"`
+
+  **Market files**:
+  - `network_performance_countywise.csv`: state, county_name, "FIPS State County Code", "New Flag", "Scoring Category", "Quality Score", "Cost Score", "MA Utilization Score", "FFS Utilization Score"
+  - `network_performance_countywise_hospital.csv`: same but "FIPS County Code" (not "FIPS State County Code")
+
+  ## Key constants
+  ```python
+  SPEC_CODES = {str(s)+".parquet" for s in [
+      25270,25277,25271,25281,25282,25272,25273,25274,25283,25269,25275,25278,25276,25280,25279,
+      26285,26284,26288,26292,26286,26287,26290,26293,26289,26291,26294,19066,27295,27296,27297,
+      27298,28309,28304,28300,28308,28302,29311,29312,29313,29310,30314,30315,30317,30316,31320,
+      31318,31327,31321,31325,31319,31326,31322,31324,18064,18065,32330,32331,32333,32332,32328,
+      32329,32334,38382,39383,33335,33337,33341,33347,33343,33344,33345,33346,33349,33338,33351,
+      33350,33340,33336,33339,33352,33342,33348,33353,34360,34354,34361,34355,34358,34362,34357,
+      34359,34363,34364,34356,10006,10005,10002,10001,10011,10004,10003,12018,12020,12016,12021,
+      12014,12017,12013,12015,12019,14029,14028,14027,14026,15031,31323,16033,16035,16034,16032,
+      37372,37371,37373,37375,37378,37380,37381,37379,37377,37376,37374,17041,17056,17047,17062,
+      17037,17040,17053,17058,17055,17059,17048,17063,17051,17045,17036,17061,17038,17046,17057,
+      17060,40384,17049,17050,17054,36370,36367,36368,22249,22225,22231,22238,22226,22246,22239,
+      22228,22241,22233,22227,22229,22230,22242,22240,22245,22243,22236,22247,22248,22237,23254,
+      23251,24268,24255,24266,24256,24261,24263,24257,24262,24264,24258,24260,24265,24267,24259,
+      17043,17044,17042
+  ]}
+
+  HOSP_NAN_NETWORKS = {208546}  # networks with no hospital counts by design
+
+  file_path = "./sample_data/"
+  additionalFilesPath = "./sample_data/"
+  outputfile_path = "./sample_data/output/Individual/"
+  outputfile_path_hosp = "./sample_data/output/Organization/"
+  output_dir = "./sample_data/output"
+  ```
+
+  ## DuckDB implementation details
+
+  **Loading IND parquet for a network:**
+  ```python
+  def _ind_paths(file_path, filespath, net_ids):
+      paths = []
+      for net in net_ids:
+          d = f"{file_path}{filespath}/network_files/Individual/{net}"
+          paths += [f"{d}/{f}" for f in os.listdir(d) if f not in SPEC_CODES]
+      return paths
+
+  def load_ind(con, file_path, filespath, net_ids, label, network_id_str, network_name, county_sql):
+      paths = _ind_paths(file_path, filespath, net_ids)
+      if not paths:
+          con.execute(f"CREATE OR REPLACE TABLE ind_{label}(npi BIGINT) AS SELECT * FROM (VALUES (NULL::BIGINT)) WHERE false")
+          return
+      paths_sql = "[" + ",".join(f"'{p}'" for p in paths) + "]"
+      con.execute(f"""
+          CREATE OR REPLACE TABLE ind_{label} AS
+          SELECT npi::BIGINT, type, presentation_name, first_name, last_name,
+                 '{network_id_str}' AS network_id, '{network_name}' AS network_name,
+                 "Address First Line", "Parent_Organization" AS parent_org,
+                 location_confidence, location_confidence_address_level,
+                 specialty_category, specialty_name, specialty_subspecialty,
+                 specialty_code::VARCHAR AS specialty_code, "Specialty Flag",
+                 "New Flag", city, state, zip_code::VARCHAR AS zip_code, county_name,
+                 "FIPS State County Code"::BIGINT AS fips,
+                 "Specialty Description", "Is_Dual_Provider",
+                 "Affiliation ID"::VARCHAR AS group_tin,
+                 "Affiliation Presentation Name" AS group_name
+          FROM read_parquet({paths_sql}, union_by_name=true)
+          WHERE "FIPS State County Code"::BIGINT IN ({county_sql})
+            AND location_confidence IN ('Low','Medium','High','LOCATION CONFIDENCE NOT AVAILABLE')
+            AND "New Flag" IN ('PCP','Physician Specialists','Other Providers')
+      """)
+  ```
+
+  **Loading ORG CSV for a network:**
+  ```python
+  def load_org(con, file_path, filespath, net_ids, label, network_id_str, network_name, county_sql):
+      parts = []
+      for net in net_ids:
+          org_file = f"{file_path}{filespath}/network_files/Organization/{net}.csv"
+          try:
+              parts.append(f"""
+                  SELECT npi::BIGINT, type, presentation_name,
+                         first_name::VARCHAR AS first_name, last_name::VARCHAR AS last_name,
+                         '{network_id_str}' AS network_id, '{network_name}' AS network_name,
+                         carrier_name, specialty_category, specialty_name, specialty_subspecialty,
+                         specialty_code::VARCHAR AS specialty_code,
+                         "New Flag", city, state, zip_code::VARCHAR AS zip_code, county_name,
+                         "FIPS State County Code"::BIGINT AS fips,
+                         "Address First Line", Status,
+                         specialty_name AS "Specialty Description",
+                         carrier_name AS parent_org,
+                         NULL::VARCHAR AS group_tin, NULL::VARCHAR AS group_name
+                  FROM read_csv('{org_file}', auto_detect=true)
+                  WHERE UPPER(Status) = 'ACTIVE'
+                    AND "FIPS State County Code"::BIGINT IN ({county_sql})
+                    AND "New Flag" != 'None'
+              """)
+          except Exception:
+              pass
+      if parts:
+          union = " UNION ALL ".join(f"({p})" for p in parts)
+          con.execute(f"CREATE OR REPLACE TABLE org_{label} AS {union}")
+      else:
+          con.execute(f"CREATE OR REPLACE TABLE org_{label}(npi BIGINT) AS SELECT * FROM (VALUES (NULL::BIGINT)) WHERE false")
+  ```
+
+  **Score join for IND (DuckDB SQL):**
+  The merge key is: `CASE WHEN "New Flag" = 'PCP' THEN 'PCP' ELSE "Specialty Description" END`
+  ```sql
+  CREATE OR REPLACE TABLE scored_ind AS
+  SELECT i.*,
+         s.cost_score, s.quality_score, s.npi_score,
+         s.ma_util_score, s.ffs_util_score, s.quality_color
+  FROM combined_ind i
+  LEFT JOIN ind_scores s
+    ON i.npi = s.npi
+   AND i."New Flag" = s."New Flag"
+   AND i.fips = s.fips
+   AND CASE WHEN i."New Flag" = 'PCP' THEN 'PCP' ELSE i."Specialty Description" END = s.specialty_desc
+  ```
+
+  **Score join for ORG (DuckDB SQL):**
+  ```sql
+  CREATE OR REPLACE TABLE scored_org AS
+  SELECT o.*,
+         s.quality_score, s.cost_score, s.ffs_util_score, s.ma_util_score,
+         NULL::FLOAT AS npi_score, NULL::VARCHAR AS quality_color
+  FROM combined_org o
+  LEFT JOIN org_scores s
+    ON o.npi = s.npi
+   AND UPPER(TRIM(o."Address First Line")) = s.address
+   AND o.state = s.state
+   AND o.fips = s.fips
+  ```
+
+  **Common/unique flags for COUNT output (window function):**
+  ```sql
+  SELECT *,
+    CASE WHEN COUNT(DISTINCT network_id) OVER (
+      PARTITION BY npi, state, fips, "New Flag"
+    ) > 1 THEN 'common' ELSE 'unique' END AS common_unique
+  FROM combined_ind
+  ```
+
+  **Y/N membership flags for DOWNLOAD output (window function):**
+  ```sql
+  SELECT *,
+    CASE WHEN COUNT(DISTINCT network_id) OVER (
+      PARTITION BY npi, state, county_name, "New Flag"
+    ) > 1 OR network_id = '{base_id}' THEN 'Y' ELSE 'N' END AS base_flag,
+    CASE WHEN COUNT(DISTINCT network_id) OVER (
+      PARTITION BY npi, state, county_name, "New Flag"
+    ) > 1 OR network_id = '{compare_id}' THEN 'Y' ELSE 'N' END AS compare_flag
+  FROM combined_ind
+  ```
+
+  **Score categorization for COUNT (replacing groupby.apply with FILTER aggregation):**
+  ```sql
+  -- 3 rows per group (High, Medium, Low) via UNION ALL
+  SELECT "New Flag", network_name, network_id,
+    COUNT(*) FILTER (WHERE quality_cat='High') AS "Quality Score",
+    COUNT(*) FILTER (WHERE cost_cat='High') AS "Cost Score",
+    COUNT(*) FILTER (WHERE util_cat='High') AS "Utilization Score",
+    'High' AS "Scoring Category"
+  FROM scored_with_cats GROUP BY "New Flag", network_name, network_id
+  UNION ALL
+  SELECT "New Flag", network_name, network_id,
+    COUNT(*) FILTER (WHERE quality_cat='Medium') AS "Quality Score",
+    COUNT(*) FILTER (WHERE cost_cat='Medium') AS "Cost Score",
+    COUNT(*) FILTER (WHERE util_cat='Medium') AS "Utilization Score",
+    'Medium' AS "Scoring Category"
+  FROM scored_with_cats GROUP BY "New Flag", network_name, network_id
+  UNION ALL
+  SELECT "New Flag", network_name, network_id,
+    COUNT(*) FILTER (WHERE cost_cat='Low') AS "Quality Score",
+    COUNT(*) FILTER (WHERE cost_cat='Low') AS "Cost Score",
+    COUNT(*) FILTER (WHERE util_cat='Low') AS "Utilization Score",
+    'Low' AS "Scoring Category"
+  FROM scored_with_cats GROUP BY "New Flag", network_name, network_id
+  ```
+
+  Score categorization helper view:
+  ```sql
+  CREATE OR REPLACE VIEW scored_with_cats AS
+  SELECT *,
+    CASE WHEN quality_score >= 4 THEN 'High'
+         WHEN quality_score > 2 THEN 'Medium'
+         WHEN quality_score <= 2 THEN 'Low'
+         ELSE 'Not Available' END AS quality_cat,
+    CASE WHEN cost_score >= 4 THEN 'High'
+         WHEN cost_score > 2 THEN 'Medium'
+         WHEN cost_score <= 2 THEN 'Low'
+         ELSE 'Not Available' END AS cost_cat,
+    CASE WHEN ma_util_score >= 80 THEN 'High'
+         WHEN ma_util_score <= 40 THEN 'Low'
+         WHEN ma_util_score > 40 THEN 'Medium'
+         ELSE 'Not Available' END AS util_cat
+  FROM scored_ind_all -- or scored_org_all
+  ```
+
+  ## Download output column sets (clientId branching - preserve existing logic)
+
+  For `clientId == 8`:
+  ```python
+  hosp_scoreCol = ['Cost Score', 'Quality Score','FFS Utilization Score','MA Utilization Score','Quality Score Confidence']
+  ind_scoreCol  = ['NPI Score','Cost Score','Quality Score','FFS Utilization Score','MA Utilization Score','Quality Score Confidence']
+  restCol_hosp  = ['Type','NPI','Presentation Name','Address First Line','Zip Code','City','State','County','FIPS State County Code','Provider Type','Specialty Name','Status']
+  restCol_ind   = ['Type','NPI','First Name','Last Name','Presentation Name','Address First Line','Zip Code','City','State','County','FIPS State County Code','Location Confidence Address level','Location Confidence County Level','Provider Type','Specialty Name','Specialty Flag','Group TIN','Group Name','Status']
+  ```
+
+  For `clientId in [45]`:
+  ```python
+  restCol_ind = ['Type','NPI','First Name','Last Name','Presentation Name','Zip Code','City','State','County','FIPS State County Code','Location Confidence County Level','Provider Type','Specialty Name','Specialty Flag','Status']
+  # no Address First Line, no Group TIN/Group Name
+  ```
+
+  For `clientId == 5`:
+  ```python
+  restCol_ind = ['Type','NPI','First Name','Last Name','Presentation Name','Zip Code','City','State','County','FIPS State County Code','Location Confidence County Level','Provider Type','Specialty Name','Specialty Flag','Group TIN','Group Name','Status']
+  ```
+
+  For all other clientIds:
+  ```python
+  hosp_scoreCol = ['Cost Score','Quality Score','Quality Score Confidence']
+  ind_scoreCol  = ['NPI Score','Quality Score Confidence']
+  restCol_hosp  = ['Type','NPI','Presentation Name','Address First Line','Zip Code','City','State','County','FIPS State County Code','Provider Type','Specialty Name','Status']
+  restCol_ind   = ['Type','NPI','First Name','Last Name','Presentation Name','Zip Code','City','State','County','FIPS State County Code','Provider Type','Specialty Name','Status']
+  ```
+
+  ## Mixed-type normalization before Polars conversion (the bug fixed in provider_download_assignment.py)
+  Before `pl.from_pandas(npi_to_npi_df)`, normalize:
+  ```python
+  for col in ['Zip Code','First Name','Last Name','Specialty Flag','Group Name','Status']:
+      if col in df.columns:
+          df[col] = df[col].astype(str).replace({'nan':'NA','None':'NA','':'NA'})
+  ```
+
+  ## Count output format
+  Three CSVs with columns:
+  - `NI+_Results_Table.csv`: `req_id, network_id, network_name, common_unique, base_compare, flag, npi_count`
+  - `NI+_Results_BarGraph.csv`: same schema but spec-level aggregation (provider type = specialty name from HSD)
+  - `NI+_Results_PerformIndicators.csv`: `req_id, network_id, network_name, Quality Score, Cost Score, Utilization Score, New Flag, Scoring Category`
+
+  ## main() signature (identical CLI to both original scripts)
+  ```
+  sys.argv: countyId id_param filespath clientID userID base_json compare_json
+            baseParentOrg compareParentOrg baseParentOrgId compareParentOrgId planType planTypeId
+  ```
+
+  ## What to write
+  Write the complete `provider_pipeline.py` to the path above. It must:
+  1. Be runnable standalone with the same 13 argv as the originals
+  2. Produce identical output files to what the two original scripts produce (when both work correctly)
+  3. Use DuckDB for all analytical SQL
+  4. Read each data file exactly once (shared between count and download)
+  5. Fix all 4 bugs listed above
+  6. Call `emit_error(traceback.format_exc())` in the except block (not silence it)
+  7. `return 1` on success, `None` on failure
+
+  Do NOT install any new packages beyond duckdb (already installed at 1.5.4) and what's in requirements.txt. The existing environment has polars, pandas, numpy, pyarrow.
+
+  After writing the file, run it with this command to verify it works:
+  ```
+  python3 provider_pipeline.py \
+    "4013,6037" "Check_1" "SAMPLE" "8" "user1" \
+    '{"1": {"parentOrganization": "Org A", "planBidIds": "H0000_001_0", "networkIds": "100001"}}' \
+    '{"2": {"parentOrganization": "Org B", "planBidIds": "H0000_002_0", "networkIds": "100002"}}' \
+    "Org A" "Org B" "1" "2" "HMO/HMO-POS" "2"
+  ```
+
+

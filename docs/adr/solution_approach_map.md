@@ -1,21 +1,6 @@
-# Solution Approach 
-Author: Indrajit Singh
-Date: 30-Jun-2026
+# Problem Deffinition
 
-#### Summary: Fixes vs originals:
-
-  1. Dead empty-guard: load_compare_files assigned to base_ind_df on empty — fixed.
-  2. NameError if compareorgid_list empty — guarded with early return.
-  3. Swallowed exceptions — now calls emit_error + traceback.
-  4. groupby.apply Python lambda in score categorization — replaced with SQL FILTER agg.
-  5. Serial parquet reads — DuckDB reads all files in one vectorised scan with pushdown.
-  6. Duplicate file reads across two scripts — eliminated; data loaded once.
-
-See the comparison here : [performance_comparison data](./docs/PERFORMANCE_BASELINE.md)
-
-## Problem Deffinition
-
-#### What the code actually does today (per request):
+## What the code actually does today (per request):
 
 - Orchestrator spawns provider_count_assignment.py and provider_download_assignment.py as subprocesses, passing 13 sys.argv params (incl. JSON blobs for base/compare).
 
@@ -23,21 +8,18 @@ See the comparison here : [performance_comparison data](./docs/PERFORMANCE_BASEL
 - Counts script writes 3 tables to SQL Server via executemany; download script writes CSV+parquet to disk.
 
 
-#### A few headline problems I can already see (I'll drill into each later): 
+## The headline problems I can already see (I'll drill into each later): 
 
-- Subprocess cold-start + re-importing pandas/polars/pyarrow every request
-- The same reference data re-read on every request and duplicated across the two scripts 
-- Joblib imported but never used (reads are sequential); row-wise .apply/groupby().apply() in hot paths; - An f-string-formatted SQL UPDATE (injection); hardcoded DB/SMTP creds; 
-- Bare except: swallowing failures; and a copy-paste bug where the empty-compare branch assigns to base_ind_df.
+subprocess cold-start + re-importing pandas/polars/pyarrow every request; the same reference data re-read on every request and duplicated across the two scripts; joblib imported but never used (reads are sequential); row-wise .apply/groupby().apply() in hot paths; an f-string-formatted SQL UPDATE (injection); hardcoded DB/SMTP creds; bare except: swallowing failures; and a copy-paste bug where the empty-compare branch assigns to base_ind_df.
 
 
-#### My recommended Solution: 
+## My recommended Solution: 
 
 Re-architect the execution model. The subprocess-per-request design is the actual scalability ceiling — we pay interpreter cold-start + library import + full reference-data re-read on every single request, and we pay it twice because two scripts read the same data. Optimizing the pandas inside that model treats the symptom. 
 
 I'd move to a persistent worker/service that keeps reference data warm in memory, run one read+filter+aggregate pass that feeds both the counts and the download outputs, and add a result cache keyed on the request inputs (counts/downloads are deterministic functions of their args). I'd reach for a lazy columnar engine (Polars lazy or DuckDB over the parquet lake) so filtering is pushed down instead of reading whole files into pandas.
 
-#### I can suggest better engine runs the heavy read + join + aggregate. I would like to defend it as below.
+## I can suggest better engine runs the heavy read + join + aggregate. I would like to defend it as below.
 
 ❯ 1. DuckDB core + Polars I/O
      Relational logic as SQL over the parquet/CSV lake; automatic pushdown, vectorized out-of-core execution, precompute persists as parquet/DuckDB tables. Most maintainable + scales past memory.
@@ -66,7 +48,7 @@ Another important question is where's the line between data-load-time precompute
 
 Another important question is:
 
-#### How do we handle the two outputs (counts vs downloads) that today are two scripts? 
+## How do we handle the two outputs (counts vs downloads) that today are two scripts? 
 
 So, right now  `provider_count_assignment.py` and `provider_download_assignment.py` re-read and re-clean the exact same provider/score data for the same request — the file walk, the parquet reads, the dedupe, the score joins are all duplicated across two processes. That's the most blatant waste in the system. They only truly diverge at the end: counts does distinct-NPI aggregations → 3 SQL tables; download emits row-level detail (more columns, plus the clientId in [45,5,8] column-set branching) → CSV+parquet.
 
@@ -94,7 +76,7 @@ Currently it is keeping it fully separate:
 
 
 
-#### Next question is : How do the results get persisted, now that one job produces both the counts (→ SQL) and the detail files? The current write path has several problems stacked together:
+## Next question is : How do the results get persisted, now that one job produces both the counts (→ SQL) and the detail files? The current write path has several problems stacked together:
 
 Some of teh red flags identified:
 
@@ -113,7 +95,7 @@ My recommended answer:
 
 
 
-I also found some concrete latent bugs while reading, not hypotheticals:
+ I also found some concrete latent bugs while reading, not hypotheticals:
 
 1. Dead empty-guard (both scripts). In load_compare_files, the if compare_ind_df.empty: branch assigns to base_ind_df, not compare_ind_df (count script line ~229, download line ~232). Copy-paste from the base loader. The intended empty-frame guard silently never applies to the compare side.
 2. NameError on empty compare list. In extract_data, final_data_ind/final_data_org are only bound inside the for compareId loop, then used after it. If compareorgid_list is empty, those names don't exist → crash. The counts script has the same shape.
@@ -121,39 +103,16 @@ I also found some concrete latent bugs while reading, not hypotheticals:
 4. Blanket blindness. warnings.filterwarnings("ignore") + bare except: (in send_email) hide real SettingWithCopyWarnings firing on genuine chained-assignment slices (e.g. final_data_ind_Hosp[cols] = ... and final_data_ind_spec['Unique/Common'] = ... on filtered views).
 5. Magic-number coupling. hosp_nan=[208546] hardcoded to special-case a "hospital network" — undocumented, fragile.
 
-#### How should we handle failure and correctness posture in the rewrite?
+## How should we handle failure and correctness posture in the rewrite?
 
     Fail loud, structured, atomic; fix inline
     Remove warning-suppression + bare excepts, structured logging, mark Failed-with-reason + roll back partial writes + dead-letter on retry-exhaustion. Fix bugs 1–3 as part of the port.
 
-#### You may ask me how do I prove the DuckDB rewrite produces the same numbers as today's pandas code?
+## You may ask me how do I prove the DuckDB rewrite produces the same numbers as today's pandas code?
 
 
     Golden equivalence + unit tests
     Baseline today's outputs on the seeded dummy data (3 SQL payloads + files), assert rewrite matches with a documented list of intentional bug-fix diffs. Unit-test pairwise common/unique, score categorization, client column branching.
 
 
-## Implementation Notes — provider_pipeline.py
-
-I built the rewrite described above. It's `provider_pipeline.py`, and it replaces `provider_count_assignment.py` + `provider_download_assignment.py` with the Option A design from earlier: one job, one DuckDB connection, two output builders.
-
-#### What it does, end to end
-
-Per request, it opens one DuckDB connection and loads the score CSVs and the base network's data exactly once. Then for each compare network, it loads that network's data, unions it with the base, joins scores, and builds both the count aggregates and the row-level download flags off that same union — so the base network is never re-read, and there's no second full pass for the second output. The score categorization (High/Medium/Low buckets) that used to be a `groupby().apply()` is now a SQL `FILTER` aggregation.
-
-Outputs, written under `./sample_data/output/`:
-- `NI+Improved_Results_Table.csv`, `NI+Improved_Results_BarGraph.csv`, `NI+Improved_Results_PerformIndicators.csv` — the count/aggregate tables
-- `Individual/<req_id>.{csv,parquet}` and `Organization/<req_id>.{csv,parquet}` — row-level download files, still branching column sets on `clientId` the same way the originals did
-
-#### Scope: this is the compute layer, not the whole job
-
-`provider_pipeline.py` does read → clean → score-join → aggregate → write-files, full stop. It does not write to SQL Server and it does not send email, both of which the production counts script does today. That's intentional, not an oversight — see [ADR 0001](./docs/adr/0001-compute-only-scope-for-pipeline.md). The parameterized/transactional/idempotent SQL write path from the question above still needs to be built and wired in separately before this can fully replace the original counts script in production.
-
-#### A couple of things worth flagging if you're picking this up
-
-- `HOSP_NAN_NETWORKS = {208546}` is carried over from the original on purpose: that one network has no Organization (hospital) data source at all, so the pipeline writes a blank placeholder row for it instead of a hospital count of 0 — reporting an actual zero would read as "this network has no hospitals," which isn't the same thing as "we have no data for it."
-- Found and fixed one real bug while porting: the score-cleanup step ran `Quality Score Confidence` (a Green/Yellow/Red category, not a number) through `pd.to_numeric()` before filling blanks, which silently turned every row's confidence value to `"NA"`. Fixed by pulling it out of the numeric-coercion pass. Reran against the seeded dummy data afterward and confirmed real Green/Yellow/Red values now come through instead of 100% `NA`.
-- The aggregate CSVs are now named `NI+Improved_Results_*.csv` instead of the originals' `NI+_Results_*.csv` — same three tables, new filenames, worth double-checking nothing downstream is still looking for the old names.
-
-See [CONTEXT.md](./docs/CONTEXT.md) for the terms used above (base/compare network, common/unique provider, etc.).
-
+`
