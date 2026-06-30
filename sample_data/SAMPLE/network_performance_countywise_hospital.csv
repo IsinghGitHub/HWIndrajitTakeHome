@@ -1,0 +1,7 @@
+state,county_name,FIPS County Code,New Flag,Scoring Category,Quality Score,Cost Score,MA Utilization Score,FFS Utilization Score
+CA,Los Angeles,6037,Hospital,High,23,21,44,48
+CA,Los Angeles,6037,Hospital,Medium,48,37,25,27
+CA,Los Angeles,6037,Hospital,Low,49,14,17,44
+AZ,Maricopa,4013,Hospital,High,19,12,28,16
+AZ,Maricopa,4013,Hospital,Medium,44,45,15,26
+AZ,Maricopa,4013,Hospital,Low,49,37,11,29

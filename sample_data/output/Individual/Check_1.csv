@@ -1,0 +1,131 @@
+Type,NPI,First Name,Last Name,Presentation Name,Address First Line,Zip Code,City,State,County,FIPS State County Code,Location Confidence Address level,Location Confidence County Level,Provider Type,Specialty Name,Specialty Flag,Group TIN,Group Name,Org A HMO/HMO-POS,Org B HMO/HMO-POS,NPI Score,Cost Score,Quality Score,FFS Utilization Score,MA Utilization Score,NPI Score Confidence
+Individual,1000000000,First0,Last0,Provider 1000000000,10 Main St,31111,Los Angeles,CA,Los Angeles,6037,High,Low,PCP,PCP,Secondary,700000,Group 0,Y,N,1.58,1.27,3.38,31.03,82.47,Green
+Individual,1000000000,First0,Last0,Provider 1000000000,10 Main St,31111,Maricopa,AZ,Maricopa,4013,High,High,PCP,PCP,Primary,700000,Group 0,Y,N,3.87,2.51,4.95,11.85,95.12,Green
+Individual,1000000001,First1,Last1,Provider 1000000001,11 Main St,31112,Los Angeles,CA,Los Angeles,6037,High,Medium,PCP,PCP,Primary,700001,Group 1,Y,N,NA,NA,NA,NA,NA,NA
+Individual,1000000001,First1,Last1,Provider 1000000001,11 Main St,31112,Maricopa,AZ,Maricopa,4013,High,Low,PCP,PCP,Secondary,700001,Group 1,Y,N,2.49,2.67,1.2,10.17,52.38,Green
+Individual,1000000002,First2,Last2,Provider 1000000002,12 Main St,31113,Maricopa,AZ,Maricopa,4013,High,Low,PCP,PCP,Primary,700002,Group 2,Y,N,3.63,1.47,1.35,77.43,41.86,Green
+Individual,1000000002,First2,Last2,Provider 1000000002,12 Main St,31113,Los Angeles,CA,Los Angeles,6037,Low,Low,PCP,PCP,Secondary,700002,Group 2,Y,N,NA,NA,NA,NA,NA,NA
+Individual,1000000003,First3,Last3,Provider 1000000003,13 Main St,31114,Los Angeles,CA,Los Angeles,6037,High,High,PCP,PCP,Secondary,700003,Group 3,Y,Y,2.73,4.15,3.2,36.07,62.6,Red
+Individual,1000000003,First3,Last3,Provider 1000000003,13 Main St,31114,Maricopa,AZ,Maricopa,4013,Medium,Medium,PCP,PCP,Secondary,700003,Group 3,Y,Y,2.27,3.72,2.57,87.5,50.45,Red
+Individual,1000000003,First3,Last3,Provider 1000000003,13 Main St,31114,Maricopa,AZ,Maricopa,4013,High,High,PCP,PCP,Secondary,700003,Group 3,Y,Y,2.27,3.72,2.57,87.5,50.45,Red
+Individual,1000000003,First3,Last3,Provider 1000000003,13 Main St,31114,Los Angeles,CA,Los Angeles,6037,Low,Low,PCP,PCP,Secondary,700003,Group 3,Y,Y,2.73,4.15,3.2,36.07,62.6,Red
+Individual,1000000004,First4,Last4,Provider 1000000004,14 Main St,31115,Los Angeles,CA,Los Angeles,6037,Low,High,PCP,PCP,Primary,700004,Group 4,Y,Y,4.12,4.92,4.21,77.9,64.25,Red
+Individual,1000000004,First4,Last4,Provider 1000000004,14 Main St,31115,Los Angeles,CA,Los Angeles,6037,Low,Medium,PCP,PCP,Secondary,700004,Group 4,Y,Y,4.12,4.92,4.21,77.9,64.25,Red
+Individual,1000000004,First4,Last4,Provider 1000000004,14 Main St,31115,Maricopa,AZ,Maricopa,4013,Medium,Medium,PCP,PCP,Primary,700004,Group 4,Y,Y,2.67,2.27,1.14,22.56,47.41,Green
+Individual,1000000004,First4,Last4,Provider 1000000004,14 Main St,31115,Maricopa,AZ,Maricopa,4013,Low,High,PCP,PCP,Secondary,700004,Group 4,Y,Y,2.67,2.27,1.14,22.56,47.41,Green
+Individual,1000000005,First5,Last5,Provider 1000000005,15 Main St,31116,Los Angeles,CA,Los Angeles,6037,Low,High,PCP,PCP,Primary,700005,Group 5,Y,Y,2.18,2.82,4.3,44.23,45.85,Green
+Individual,1000000005,First5,Last5,Provider 1000000005,15 Main St,31116,Los Angeles,CA,Los Angeles,6037,Medium,Medium,PCP,PCP,Primary,700005,Group 5,Y,Y,2.18,2.82,4.3,44.23,45.85,Green
+Individual,1000000005,First5,Last5,Provider 1000000005,15 Main St,31116,Maricopa,AZ,Maricopa,4013,Low,Medium,PCP,PCP,Secondary,700005,Group 5,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000005,First5,Last5,Provider 1000000005,15 Main St,31116,Maricopa,AZ,Maricopa,4013,Medium,High,PCP,PCP,Primary,700005,Group 5,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000006,First6,Last6,Provider 1000000006,16 Main St,31117,Maricopa,AZ,Maricopa,4013,High,Medium,PCP,PCP,Primary,700006,Group 6,Y,Y,4.07,4.38,2.93,50.48,85.2,Yellow
+Individual,1000000006,First6,Last6,Provider 1000000006,16 Main St,31117,Maricopa,AZ,Maricopa,4013,High,High,PCP,PCP,Primary,700006,Group 6,Y,Y,4.07,4.38,2.93,50.48,85.2,Yellow
+Individual,1000000006,First6,Last6,Provider 1000000006,16 Main St,31117,Los Angeles,CA,Los Angeles,6037,Medium,High,PCP,PCP,Primary,700006,Group 6,Y,Y,1.48,1.61,3.4,95.84,36.49,Yellow
+Individual,1000000007,First7,Last7,Provider 1000000007,17 Main St,31118,Maricopa,AZ,Maricopa,4013,Low,Medium,PCP,PCP,Secondary,700007,Group 7,Y,Y,4.71,1.23,4.2,69.81,77.21,Red
+Individual,1000000007,First7,Last7,Provider 1000000007,17 Main St,31118,Maricopa,AZ,Maricopa,4013,Low,Medium,PCP,PCP,Primary,700007,Group 7,Y,Y,4.71,1.23,4.2,69.81,77.21,Red
+Individual,1000000007,First7,Last7,Provider 1000000007,17 Main St,31118,Los Angeles,CA,Los Angeles,6037,Medium,Medium,PCP,PCP,Primary,700007,Group 7,Y,Y,3.45,3.84,4.92,61.63,5.45,Green
+Individual,1000000008,First8,Last8,Provider 1000000008,18 Main St,31119,Maricopa,AZ,Maricopa,4013,Low,Low,PCP,PCP,Secondary,700008,Group 8,Y,Y,4.68,3.95,4.55,52.03,50.36,Yellow
+Individual,1000000008,First8,Last8,Provider 1000000008,18 Main St,31119,Los Angeles,CA,Los Angeles,6037,High,Low,PCP,PCP,Primary,700008,Group 8,Y,Y,2.12,4.37,1.22,17.3,33.41,Green
+Individual,1000000008,First8,Last8,Provider 1000000008,18 Main St,31119,Los Angeles,CA,Los Angeles,6037,Medium,Low,PCP,PCP,Secondary,700008,Group 8,Y,Y,2.12,4.37,1.22,17.3,33.41,Green
+Individual,1000000008,First8,Last8,Provider 1000000008,18 Main St,31119,Maricopa,AZ,Maricopa,4013,Medium,Low,PCP,PCP,Secondary,700008,Group 8,Y,Y,4.68,3.95,4.55,52.03,50.36,Yellow
+Individual,1000000009,First9,Last9,Provider 1000000009,19 Main St,31120,Maricopa,AZ,Maricopa,4013,Low,Low,PCP,PCP,Primary,700009,Group 9,N,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000009,First9,Last9,Provider 1000000009,19 Main St,31120,Los Angeles,CA,Los Angeles,6037,High,Medium,PCP,PCP,Primary,700009,Group 9,N,Y,3.29,1.69,3.26,52.26,46.6,Red
+Individual,1000000010,First10,Last10,Provider 1000000010,20 Main St,31121,Los Angeles,CA,Los Angeles,6037,Medium,Low,PCP,PCP,Secondary,700010,Group 10,N,Y,2.24,4.98,4.09,70.54,68.77,Red
+Individual,1000000010,First10,Last10,Provider 1000000010,20 Main St,31121,Maricopa,AZ,Maricopa,4013,High,High,PCP,PCP,Secondary,700010,Group 10,N,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000011,First11,Last11,Provider 1000000011,21 Main St,31122,Los Angeles,CA,Los Angeles,6037,High,Medium,PCP,PCP,Primary,700011,Group 11,N,Y,1.95,1.17,1.73,57.12,24.94,Red
+Individual,1000000011,First11,Last11,Provider 1000000011,21 Main St,31122,Maricopa,AZ,Maricopa,4013,Low,Low,PCP,PCP,Secondary,700011,Group 11,N,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000100,First100,Last100,Provider 1000000100,110 Main St,31211,Maricopa,AZ,Maricopa,4013,Low,Low,Physician Specialists,Cardiology,Primary,700100,Group 0,Y,N,NA,NA,NA,NA,NA,NA
+Individual,1000000100,First100,Last100,Provider 1000000100,110 Main St,31211,Los Angeles,CA,Los Angeles,6037,High,Low,Physician Specialists,Orthopedic Surgery,Primary,700100,Group 0,Y,N,1.4,1.21,4.7,90.27,84.36,Red
+Individual,1000000101,First101,Last101,Provider 1000000101,111 Main St,31212,Maricopa,AZ,Maricopa,4013,High,Medium,Physician Specialists,Orthopedic Surgery,Secondary,700101,Group 1,Y,N,4.74,3.92,3.21,47.94,78.03,Yellow
+Individual,1000000101,First101,Last101,Provider 1000000101,111 Main St,31212,Los Angeles,CA,Los Angeles,6037,High,Medium,Physician Specialists,Cardiology,Secondary,700101,Group 1,Y,N,2.21,1.58,4.78,69.98,57.8,Green
+Individual,1000000102,First102,Last102,Provider 1000000102,112 Main St,31213,Maricopa,AZ,Maricopa,4013,Medium,Medium,Physician Specialists,Dermatology,Secondary,700102,Group 2,Y,N,NA,NA,NA,NA,NA,NA
+Individual,1000000102,First102,Last102,Provider 1000000102,112 Main St,31213,Los Angeles,CA,Los Angeles,6037,Medium,High,Physician Specialists,Cardiology,Secondary,700102,Group 2,Y,N,NA,NA,NA,NA,NA,NA
+Individual,1000000103,First103,Last103,Provider 1000000103,113 Main St,31214,Los Angeles,CA,Los Angeles,6037,High,High,Physician Specialists,Cardiology,Primary,700103,Group 3,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000103,First103,Last103,Provider 1000000103,113 Main St,31214,Maricopa,AZ,Maricopa,4013,High,Medium,Physician Specialists,Cardiology,Primary,700103,Group 3,Y,Y,4.05,2.33,4.59,36.42,27.05,Red
+Individual,1000000103,First103,Last103,Provider 1000000103,113 Main St,31214,Maricopa,AZ,Maricopa,4013,Medium,Medium,Physician Specialists,Dermatology,Primary,700103,Group 3,Y,Y,1.06,2.26,3.97,85.65,82.72,Yellow
+Individual,1000000103,First103,Last103,Provider 1000000103,113 Main St,31214,Los Angeles,CA,Los Angeles,6037,Low,Low,Physician Specialists,Dermatology,Primary,700103,Group 3,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000104,First104,Last104,Provider 1000000104,114 Main St,31215,Maricopa,AZ,Maricopa,4013,High,Low,Physician Specialists,Dermatology,Secondary,700104,Group 4,Y,Y,2.36,3.35,4.4,53.14,49.88,Red
+Individual,1000000104,First104,Last104,Provider 1000000104,114 Main St,31215,Los Angeles,CA,Los Angeles,6037,Medium,Medium,Physician Specialists,Orthopedic Surgery,Primary,700104,Group 4,Y,Y,1.56,3.56,2.07,41.69,47.79,Yellow
+Individual,1000000104,First104,Last104,Provider 1000000104,114 Main St,31215,Maricopa,AZ,Maricopa,4013,Medium,Medium,Physician Specialists,Cardiology,Secondary,700104,Group 4,Y,Y,1.43,2.14,4.35,66.57,99.91,Green
+Individual,1000000104,First104,Last104,Provider 1000000104,114 Main St,31215,Los Angeles,CA,Los Angeles,6037,High,Medium,Physician Specialists,Dermatology,Primary,700104,Group 4,Y,Y,1.7,1.08,1.22,59.11,5.34,Green
+Individual,1000000105,First105,Last105,Provider 1000000105,115 Main St,31216,Los Angeles,CA,Los Angeles,6037,Low,Medium,Physician Specialists,Dermatology,Secondary,700105,Group 5,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000105,First105,Last105,Provider 1000000105,115 Main St,31216,Maricopa,AZ,Maricopa,4013,High,Medium,Physician Specialists,Cardiology,Secondary,700105,Group 5,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000105,First105,Last105,Provider 1000000105,115 Main St,31216,Los Angeles,CA,Los Angeles,6037,High,High,Physician Specialists,Orthopedic Surgery,Primary,700105,Group 5,Y,Y,1.81,2.15,3.94,86.07,69.48,Red
+Individual,1000000105,First105,Last105,Provider 1000000105,115 Main St,31216,Maricopa,AZ,Maricopa,4013,High,Low,Physician Specialists,Cardiology,Secondary,700105,Group 5,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000106,First106,Last106,Provider 1000000106,116 Main St,31217,Los Angeles,CA,Los Angeles,6037,Low,Medium,Physician Specialists,Dermatology,Secondary,700106,Group 6,Y,Y,3.59,3.26,3.81,31.62,65.24,Yellow
+Individual,1000000106,First106,Last106,Provider 1000000106,116 Main St,31217,Los Angeles,CA,Los Angeles,6037,High,Low,Physician Specialists,Dermatology,Secondary,700106,Group 6,Y,Y,3.59,3.26,3.81,31.62,65.24,Yellow
+Individual,1000000106,First106,Last106,Provider 1000000106,116 Main St,31217,Maricopa,AZ,Maricopa,4013,Low,High,Physician Specialists,Cardiology,Secondary,700106,Group 6,Y,Y,4.2,1.55,4.84,78.26,59.37,Red
+Individual,1000000106,First106,Last106,Provider 1000000106,116 Main St,31217,Maricopa,AZ,Maricopa,4013,Low,Low,Physician Specialists,Cardiology,Secondary,700106,Group 6,Y,Y,4.2,1.55,4.84,78.26,59.37,Red
+Individual,1000000107,First107,Last107,Provider 1000000107,117 Main St,31218,Los Angeles,CA,Los Angeles,6037,High,Medium,Physician Specialists,Orthopedic Surgery,Primary,700107,Group 7,Y,Y,2.11,1.48,1.54,42.79,30.47,Red
+Individual,1000000107,First107,Last107,Provider 1000000107,117 Main St,31218,Los Angeles,CA,Los Angeles,6037,High,Low,Physician Specialists,Dermatology,Secondary,700107,Group 7,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000107,First107,Last107,Provider 1000000107,117 Main St,31218,Maricopa,AZ,Maricopa,4013,Medium,Low,Physician Specialists,Dermatology,Secondary,700107,Group 7,Y,Y,1.62,3.52,4.4,19.3,73.46,Green
+Individual,1000000107,First107,Last107,Provider 1000000107,117 Main St,31218,Maricopa,AZ,Maricopa,4013,Low,High,Physician Specialists,Cardiology,Primary,700107,Group 7,Y,Y,1.66,1.58,4.68,15.36,28.47,Yellow
+Individual,1000000108,First108,Last108,Provider 1000000108,118 Main St,31219,Maricopa,AZ,Maricopa,4013,Low,High,Physician Specialists,Dermatology,Primary,700108,Group 8,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000108,First108,Last108,Provider 1000000108,118 Main St,31219,Los Angeles,CA,Los Angeles,6037,Medium,Medium,Physician Specialists,Orthopedic Surgery,Secondary,700108,Group 8,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000108,First108,Last108,Provider 1000000108,118 Main St,31219,Maricopa,AZ,Maricopa,4013,High,Medium,Physician Specialists,Orthopedic Surgery,Secondary,700108,Group 8,Y,Y,1.12,1.36,4.59,14.3,24.08,Yellow
+Individual,1000000108,First108,Last108,Provider 1000000108,118 Main St,31219,Los Angeles,CA,Los Angeles,6037,Low,Medium,Physician Specialists,Cardiology,Primary,700108,Group 8,Y,Y,2.31,2.47,2.47,68.57,37.95,Green
+Individual,1000000109,First109,Last109,Provider 1000000109,119 Main St,31220,Los Angeles,CA,Los Angeles,6037,Low,High,Physician Specialists,Dermatology,Secondary,700109,Group 9,N,Y,3.35,3.55,1.49,1.23,68.61,Red
+Individual,1000000109,First109,Last109,Provider 1000000109,119 Main St,31220,Maricopa,AZ,Maricopa,4013,High,High,Physician Specialists,Cardiology,Primary,700109,Group 9,N,Y,3.4,4.2,2.97,11.97,93.12,Red
+Individual,1000000110,First110,Last110,Provider 1000000110,120 Main St,31221,Maricopa,AZ,Maricopa,4013,Medium,Medium,Physician Specialists,Orthopedic Surgery,Primary,700110,Group 10,N,Y,4.22,4.39,3.61,63.29,53.27,Yellow
+Individual,1000000110,First110,Last110,Provider 1000000110,120 Main St,31221,Los Angeles,CA,Los Angeles,6037,High,High,Physician Specialists,Dermatology,Primary,700110,Group 10,N,Y,3.9,3.46,1.38,93.59,8.45,Green
+Individual,1000000111,First111,Last111,Provider 1000000111,121 Main St,31222,Los Angeles,CA,Los Angeles,6037,Medium,Medium,Physician Specialists,Cardiology,Primary,700111,Group 11,N,Y,4.43,3.14,3.06,38.51,46.28,Green
+Individual,1000000111,First111,Last111,Provider 1000000111,121 Main St,31222,Maricopa,AZ,Maricopa,4013,Low,Low,Physician Specialists,Cardiology,Primary,700111,Group 11,N,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000200,First200,Last200,Provider 1000000200,210 Main St,31311,Maricopa,AZ,Maricopa,4013,High,Low,Other Providers,Physician Assistant,Primary,700200,Group 0,Y,N,4.64,4.11,1.79,3.62,65.63,Green
+Individual,1000000200,First200,Last200,Provider 1000000200,210 Main St,31311,Los Angeles,CA,Los Angeles,6037,Medium,Medium,Other Providers,Nurse Practitioner,Secondary,700200,Group 0,Y,N,1.84,3.56,1.04,16.38,52.51,Yellow
+Individual,1000000201,First201,Last201,Provider 1000000201,211 Main St,31312,Los Angeles,CA,Los Angeles,6037,Low,Medium,Other Providers,Nurse Practitioner,Primary,700201,Group 1,Y,N,NA,NA,NA,NA,NA,NA
+Individual,1000000201,First201,Last201,Provider 1000000201,211 Main St,31312,Maricopa,AZ,Maricopa,4013,High,Medium,Other Providers,Physician Assistant,Primary,700201,Group 1,Y,N,4.37,1.34,1.97,64.91,63.76,Yellow
+Individual,1000000202,First202,Last202,Provider 1000000202,212 Main St,31313,Maricopa,AZ,Maricopa,4013,High,Medium,Other Providers,Nurse Practitioner,Primary,700202,Group 2,Y,N,2.64,3.54,2.65,58.83,21.76,Yellow
+Individual,1000000202,First202,Last202,Provider 1000000202,212 Main St,31313,Los Angeles,CA,Los Angeles,6037,High,High,Other Providers,Physician Assistant,Primary,700202,Group 2,Y,N,4.35,4.2,2.26,11.59,49.41,Green
+Individual,1000000203,First203,Last203,Provider 1000000203,213 Main St,31314,Maricopa,AZ,Maricopa,4013,High,Low,Other Providers,Physician Assistant,Primary,700203,Group 3,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000203,First203,Last203,Provider 1000000203,213 Main St,31314,Maricopa,AZ,Maricopa,4013,Low,High,Other Providers,Nurse Practitioner,Secondary,700203,Group 3,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000203,First203,Last203,Provider 1000000203,213 Main St,31314,Los Angeles,CA,Los Angeles,6037,High,High,Other Providers,Nurse Practitioner,Primary,700203,Group 3,Y,Y,1.44,4.67,4.13,87.92,99.7,Green
+Individual,1000000203,First203,Last203,Provider 1000000203,213 Main St,31314,Los Angeles,CA,Los Angeles,6037,Medium,High,Other Providers,Nurse Practitioner,Secondary,700203,Group 3,Y,Y,1.44,4.67,4.13,87.92,99.7,Green
+Individual,1000000204,First204,Last204,Provider 1000000204,214 Main St,31315,Los Angeles,CA,Los Angeles,6037,Medium,High,Other Providers,Nurse Practitioner,Primary,700204,Group 4,Y,Y,1.59,2.26,1.63,43.79,93.61,Red
+Individual,1000000204,First204,Last204,Provider 1000000204,214 Main St,31315,Maricopa,AZ,Maricopa,4013,Low,High,Other Providers,Nurse Practitioner,Secondary,700204,Group 4,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000204,First204,Last204,Provider 1000000204,214 Main St,31315,Maricopa,AZ,Maricopa,4013,Low,Medium,Other Providers,Physician Assistant,Primary,700204,Group 4,Y,Y,3.84,1.17,4.54,9.17,17.31,Red
+Individual,1000000204,First204,Last204,Provider 1000000204,214 Main St,31315,Los Angeles,CA,Los Angeles,6037,High,High,Other Providers,Physician Assistant,Secondary,700204,Group 4,Y,Y,1.95,2.82,1.99,81.66,74.6,Red
+Individual,1000000205,First205,Last205,Provider 1000000205,215 Main St,31316,Maricopa,AZ,Maricopa,4013,High,High,Other Providers,Physician Assistant,Primary,700205,Group 5,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000205,First205,Last205,Provider 1000000205,215 Main St,31316,Maricopa,AZ,Maricopa,4013,Medium,High,Other Providers,Nurse Practitioner,Secondary,700205,Group 5,Y,Y,2.96,1.93,2.17,49.33,58.64,Green
+Individual,1000000205,First205,Last205,Provider 1000000205,215 Main St,31316,Los Angeles,CA,Los Angeles,6037,Low,Low,Other Providers,Nurse Practitioner,Secondary,700205,Group 5,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000205,First205,Last205,Provider 1000000205,215 Main St,31316,Los Angeles,CA,Los Angeles,6037,High,Low,Other Providers,Nurse Practitioner,Secondary,700205,Group 5,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000206,First206,Last206,Provider 1000000206,216 Main St,31317,Los Angeles,CA,Los Angeles,6037,High,Medium,Other Providers,Physician Assistant,Primary,700206,Group 6,Y,Y,1.5,1.16,1.81,74.52,50.45,Red
+Individual,1000000206,First206,Last206,Provider 1000000206,216 Main St,31317,Maricopa,AZ,Maricopa,4013,High,High,Other Providers,Physician Assistant,Primary,700206,Group 6,Y,Y,4.14,4.92,2.83,57.24,63.64,Green
+Individual,1000000206,First206,Last206,Provider 1000000206,216 Main St,31317,Los Angeles,CA,Los Angeles,6037,High,Low,Other Providers,Physician Assistant,Secondary,700206,Group 6,Y,Y,1.5,1.16,1.81,74.52,50.45,Red
+Individual,1000000206,First206,Last206,Provider 1000000206,216 Main St,31317,Maricopa,AZ,Maricopa,4013,Medium,Low,Other Providers,Nurse Practitioner,Primary,700206,Group 6,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000207,First207,Last207,Provider 1000000207,217 Main St,31318,Los Angeles,CA,Los Angeles,6037,High,Medium,Other Providers,Nurse Practitioner,Primary,700207,Group 7,Y,Y,1.6,2.74,2.88,90.71,18.09,Red
+Individual,1000000207,First207,Last207,Provider 1000000207,217 Main St,31318,Maricopa,AZ,Maricopa,4013,Medium,Medium,Other Providers,Nurse Practitioner,Primary,700207,Group 7,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000207,First207,Last207,Provider 1000000207,217 Main St,31318,Los Angeles,CA,Los Angeles,6037,Medium,Low,Other Providers,Nurse Practitioner,Secondary,700207,Group 7,Y,Y,1.6,2.74,2.88,90.71,18.09,Red
+Individual,1000000207,First207,Last207,Provider 1000000207,217 Main St,31318,Maricopa,AZ,Maricopa,4013,High,Low,Other Providers,Nurse Practitioner,Primary,700207,Group 7,Y,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000208,First208,Last208,Provider 1000000208,218 Main St,31319,Los Angeles,CA,Los Angeles,6037,Low,High,Other Providers,Nurse Practitioner,Primary,700208,Group 8,Y,Y,4.21,1.21,3.42,84.94,23.86,Green
+Individual,1000000208,First208,Last208,Provider 1000000208,218 Main St,31319,Los Angeles,CA,Los Angeles,6037,Medium,High,Other Providers,Nurse Practitioner,Primary,700208,Group 8,Y,Y,4.21,1.21,3.42,84.94,23.86,Green
+Individual,1000000208,First208,Last208,Provider 1000000208,218 Main St,31319,Maricopa,AZ,Maricopa,4013,Medium,Low,Other Providers,Nurse Practitioner,Secondary,700208,Group 8,Y,Y,4.67,2.19,4.8,32.84,48.09,Yellow
+Individual,1000000208,First208,Last208,Provider 1000000208,218 Main St,31319,Maricopa,AZ,Maricopa,4013,Low,High,Other Providers,Nurse Practitioner,Primary,700208,Group 8,Y,Y,4.67,2.19,4.8,32.84,48.09,Yellow
+Individual,1000000209,First209,Last209,Provider 1000000209,219 Main St,31320,Maricopa,AZ,Maricopa,4013,High,High,Other Providers,Physician Assistant,Secondary,700209,Group 9,N,Y,3.03,4.76,1.59,47.42,40.4,Yellow
+Individual,1000000209,First209,Last209,Provider 1000000209,219 Main St,31320,Los Angeles,CA,Los Angeles,6037,Low,Medium,Other Providers,Physician Assistant,Secondary,700209,Group 9,N,Y,NA,NA,NA,NA,NA,NA
+Individual,1000000210,First210,Last210,Provider 1000000210,220 Main St,31321,Maricopa,AZ,Maricopa,4013,Low,Medium,Other Providers,Nurse Practitioner,Primary,700210,Group 10,N,Y,2.47,4.05,1.23,33.85,53.95,Red
+Individual,1000000210,First210,Last210,Provider 1000000210,220 Main St,31321,Los Angeles,CA,Los Angeles,6037,High,High,Other Providers,Nurse Practitioner,Primary,700210,Group 10,N,Y,4.96,1.66,4.35,83.91,55.6,Red
+Individual,1000000211,First211,Last211,Provider 1000000211,221 Main St,31322,Maricopa,AZ,Maricopa,4013,Medium,Low,Other Providers,Nurse Practitioner,Secondary,700211,Group 11,N,Y,2.57,1.57,2.79,75.53,8.0,Red
+Individual,1000000211,First211,Last211,Provider 1000000211,221 Main St,31322,Los Angeles,CA,Los Angeles,6037,Low,Medium,Other Providers,Physician Assistant,Secondary,700211,Group 11,N,Y,3.36,4.78,2.01,61.62,9.5,Red
+Organization,1000000900,NA,NA,Hospital 0 Medical Center,910 Hospital Ave,32011,Los Angeles,CA,Los Angeles,6037,,,Hospital,Hospital,Not Applicable,NA,NA,Y,N,NA,2.79,4.71,30.75,59.85,NA
+Organization,1000000900,NA,NA,Hospital 0 Medical Center,910 Hospital Ave,32011,Maricopa,AZ,Maricopa,4013,,,Hospital,Hospital,Not Applicable,NA,NA,Y,N,NA,3.88,4.61,96.32,78.2,NA
+Organization,1000000901,NA,NA,Hospital 1 Medical Center,911 Hospital Ave,32012,Los Angeles,CA,Los Angeles,6037,,,Hospital,Hospital,Not Applicable,NA,NA,Y,N,NA,3.62,3.21,96.98,98.46,NA
+Organization,1000000901,NA,NA,Hospital 1 Medical Center,911 Hospital Ave,32012,Maricopa,AZ,Maricopa,4013,,,Hospital,Hospital,Not Applicable,NA,NA,Y,N,NA,NA,NA,NA,NA,NA
+Organization,1000000902,NA,NA,Hospital 2 Medical Center,912 Hospital Ave,32013,Los Angeles,CA,Los Angeles,6037,,,Hospital,Hospital,Not Applicable,NA,NA,Y,N,NA,2.86,4.94,97.79,41.16,NA
+Organization,1000000902,NA,NA,Hospital 2 Medical Center,912 Hospital Ave,32013,Maricopa,AZ,Maricopa,4013,,,Hospital,Hospital,Not Applicable,NA,NA,Y,N,NA,3.48,4.93,47.75,76.14,NA
+Organization,1000000903,NA,NA,Hospital 3 Medical Center,913 Hospital Ave,32014,Los Angeles,CA,Los Angeles,6037,,,Hospital,Hospital,Not Applicable,NA,NA,Y,Y,NA,1.44,1.19,67.53,71.33,NA
+Organization,1000000903,NA,NA,Hospital 3 Medical Center,913 Hospital Ave,32014,Maricopa,AZ,Maricopa,4013,,,Hospital,Hospital,Not Applicable,NA,NA,Y,Y,NA,1.34,4.17,55.55,80.21,NA
+Organization,1000000904,NA,NA,Hospital 4 Medical Center,914 Hospital Ave,32015,Maricopa,AZ,Maricopa,4013,,,Hospital,Hospital,Not Applicable,NA,NA,Y,Y,NA,1.46,4.47,73.24,44.01,NA
+Organization,1000000904,NA,NA,Hospital 4 Medical Center,914 Hospital Ave,32015,Los Angeles,CA,Los Angeles,6037,,,Hospital,Hospital,Not Applicable,NA,NA,Y,Y,NA,4.46,4.09,73.94,80.09,NA
+Organization,1000000905,NA,NA,Hospital 5 Medical Center,915 Hospital Ave,32016,Los Angeles,CA,Los Angeles,6037,,,Hospital,Hospital,Not Applicable,NA,NA,Y,Y,NA,1.16,1.5,77.73,48.97,NA
+Organization,1000000905,NA,NA,Hospital 5 Medical Center,915 Hospital Ave,32016,Maricopa,AZ,Maricopa,4013,,,Hospital,Hospital,Not Applicable,NA,NA,Y,Y,NA,NA,NA,NA,NA,NA
+Organization,1000000906,NA,NA,Hospital 6 Medical Center,916 Hospital Ave,32017,Maricopa,AZ,Maricopa,4013,,,Hospital,Hospital,Not Applicable,NA,NA,Y,Y,NA,4.29,4.7,3.7,37.27,NA
+Organization,1000000906,NA,NA,Hospital 6 Medical Center,916 Hospital Ave,32017,Los Angeles,CA,Los Angeles,6037,,,Hospital,Hospital,Not Applicable,NA,NA,Y,Y,NA,NA,NA,NA,NA,NA
+Organization,1000000907,NA,NA,Hospital 7 Medical Center,917 Hospital Ave,32018,Maricopa,AZ,Maricopa,4013,,,Hospital,Hospital,Not Applicable,NA,NA,Y,Y,NA,2.36,1.71,19.16,2.48,NA
+Organization,1000000907,NA,NA,Hospital 7 Medical Center,917 Hospital Ave,32018,Los Angeles,CA,Los Angeles,6037,,,Hospital,Hospital,Not Applicable,NA,NA,Y,Y,NA,NA,NA,NA,NA,NA
+Organization,1000000908,NA,NA,Hospital 8 Medical Center,918 Hospital Ave,32019,Maricopa,AZ,Maricopa,4013,,,Hospital,Hospital,Not Applicable,NA,NA,Y,Y,NA,3.06,1.02,67.73,2.96,NA
+Organization,1000000908,NA,NA,Hospital 8 Medical Center,918 Hospital Ave,32019,Los Angeles,CA,Los Angeles,6037,,,Hospital,Hospital,Not Applicable,NA,NA,Y,Y,NA,2.59,1.42,91.73,63.08,NA
+Organization,1000000909,NA,NA,Hospital 9 Medical Center,919 Hospital Ave,32020,Los Angeles,CA,Los Angeles,6037,,,Hospital,Hospital,Not Applicable,NA,NA,N,Y,NA,2.11,1.03,70.3,63.38,NA
+Organization,1000000909,NA,NA,Hospital 9 Medical Center,919 Hospital Ave,32020,Maricopa,AZ,Maricopa,4013,,,Hospital,Hospital,Not Applicable,NA,NA,N,Y,NA,3.94,2.15,75.0,34.65,NA
+Organization,1000000910,NA,NA,Hospital 10 Medical Center,920 Hospital Ave,32021,Maricopa,AZ,Maricopa,4013,,,Hospital,Hospital,Not Applicable,NA,NA,N,Y,NA,1.94,1.2,62.19,85.81,NA
+Organization,1000000910,NA,NA,Hospital 10 Medical Center,920 Hospital Ave,32021,Los Angeles,CA,Los Angeles,6037,,,Hospital,Hospital,Not Applicable,NA,NA,N,Y,NA,NA,NA,NA,NA,NA
+Organization,1000000911,NA,NA,Hospital 11 Medical Center,921 Hospital Ave,32022,Los Angeles,CA,Los Angeles,6037,,,Hospital,Hospital,Not Applicable,NA,NA,N,Y,NA,NA,NA,NA,NA,NA
+Organization,1000000911,NA,NA,Hospital 11 Medical Center,921 Hospital Ave,32022,Maricopa,AZ,Maricopa,4013,,,Hospital,Hospital,Not Applicable,NA,NA,N,Y,NA,NA,NA,NA,NA,NA

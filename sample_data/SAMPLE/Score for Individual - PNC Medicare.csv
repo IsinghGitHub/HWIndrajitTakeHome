@@ -1,0 +1,61 @@
+NPI,New Flag,County FIPS,Cost Score,Quality Score,Specialty,NPI Score,MA Utilization Score,FFS Utilization Score,Quality color indicator
+1000000204,Other Providers,6037,2.82,1.99,Physician Assistant,1.95,74.6,81.66,Red
+1000000000,PCP,6037,1.27,3.38,PCP,1.58,82.47,31.03,Green
+1000000107,Physician Specialists,4013,1.58,4.68,Cardiology,1.66,28.47,15.36,Yellow
+1000000104,Physician Specialists,6037,1.08,1.22,Dermatology,1.7,5.34,59.11,Green
+1000000003,PCP,4013,3.72,2.57,PCP,2.27,50.45,87.5,Red
+1000000011,PCP,6037,1.17,1.73,PCP,1.95,24.94,57.12,Red
+1000000001,PCP,4013,2.67,1.2,PCP,2.49,52.38,10.17,Green
+1000000100,Physician Specialists,6037,1.21,4.7,Orthopedic Surgery,1.4,84.36,90.27,Red
+1000000004,PCP,6037,4.92,4.21,PCP,4.12,64.25,77.9,Red
+1000000111,Physician Specialists,6037,3.14,3.06,Cardiology,4.43,46.28,38.51,Green
+1000000104,Physician Specialists,6037,3.56,2.07,Orthopedic Surgery,1.56,47.79,41.69,Yellow
+1000000108,Physician Specialists,6037,2.47,2.47,Cardiology,2.31,37.95,68.57,Green
+1000000208,Other Providers,4013,2.19,4.8,Nurse Practitioner,4.67,48.09,32.84,Yellow
+1000000110,Physician Specialists,4013,4.39,3.61,Orthopedic Surgery,4.22,53.27,63.29,Yellow
+1000000105,Physician Specialists,6037,2.15,3.94,Orthopedic Surgery,1.81,69.48,86.07,Red
+1000000110,Physician Specialists,6037,3.46,1.38,Dermatology,3.9,8.45,93.59,Green
+1000000106,Physician Specialists,4013,1.55,4.84,Cardiology,4.2,59.37,78.26,Red
+1000000211,Other Providers,6037,4.78,2.01,Physician Assistant,3.36,9.5,61.62,Red
+1000000009,PCP,6037,1.69,3.26,PCP,3.29,46.6,52.26,Red
+1000000109,Physician Specialists,4013,4.2,2.97,Cardiology,3.4,93.12,11.97,Red
+1000000002,PCP,4013,1.47,1.35,PCP,3.63,41.86,77.43,Green
+1000000103,Physician Specialists,4013,2.33,4.59,Cardiology,4.05,27.05,36.42,Red
+1000000204,Other Providers,6037,2.26,1.63,Nurse Practitioner,1.59,93.61,43.79,Red
+1000000101,Physician Specialists,4013,3.92,3.21,Orthopedic Surgery,4.74,78.03,47.94,Yellow
+1000000000,PCP,4013,2.51,4.95,PCP,3.87,95.12,11.85,Green
+1000000109,Physician Specialists,6037,3.55,1.49,Dermatology,3.35,68.61,1.23,Red
+1000000005,PCP,6037,2.82,4.3,PCP,2.18,45.85,44.23,Green
+1000000203,Other Providers,6037,4.67,4.13,Nurse Practitioner,1.44,99.7,87.92,Green
+1000000104,Physician Specialists,4013,2.14,4.35,Cardiology,1.43,99.91,66.57,Green
+1000000108,Physician Specialists,4013,1.36,4.59,Orthopedic Surgery,1.12,24.08,14.3,Yellow
+1000000200,Other Providers,4013,4.11,1.79,Physician Assistant,4.64,65.63,3.62,Green
+1000000208,Other Providers,6037,1.21,3.42,Nurse Practitioner,4.21,23.86,84.94,Green
+1000000007,PCP,4013,1.23,4.2,PCP,4.71,77.21,69.81,Red
+1000000206,Other Providers,6037,1.16,1.81,Physician Assistant,1.5,50.45,74.52,Red
+1000000107,Physician Specialists,4013,3.52,4.4,Dermatology,1.62,73.46,19.3,Green
+1000000007,PCP,6037,3.84,4.92,PCP,3.45,5.45,61.63,Green
+1000000204,Other Providers,4013,1.17,4.54,Physician Assistant,3.84,17.31,9.17,Red
+1000000206,Other Providers,4013,4.92,2.83,Physician Assistant,4.14,63.64,57.24,Green
+1000000101,Physician Specialists,6037,1.58,4.78,Cardiology,2.21,57.8,69.98,Green
+1000000209,Other Providers,4013,4.76,1.59,Physician Assistant,3.03,40.4,47.42,Yellow
+1000000107,Physician Specialists,6037,1.48,1.54,Orthopedic Surgery,2.11,30.47,42.79,Red
+1000000202,Other Providers,4013,3.54,2.65,Nurse Practitioner,2.64,21.76,58.83,Yellow
+1000000004,PCP,4013,2.27,1.14,PCP,2.67,47.41,22.56,Green
+1000000106,Physician Specialists,6037,3.26,3.81,Dermatology,3.59,65.24,31.62,Yellow
+1000000003,PCP,6037,4.15,3.2,PCP,2.73,62.6,36.07,Red
+1000000008,PCP,4013,3.95,4.55,PCP,4.68,50.36,52.03,Yellow
+1000000202,Other Providers,6037,4.2,2.26,Physician Assistant,4.35,49.41,11.59,Green
+1000000008,PCP,6037,4.37,1.22,PCP,2.12,33.41,17.3,Green
+1000000103,Physician Specialists,4013,2.26,3.97,Dermatology,1.06,82.72,85.65,Yellow
+1000000006,PCP,6037,1.61,3.4,PCP,1.48,36.49,95.84,Yellow
+1000000010,PCP,6037,4.98,4.09,PCP,2.24,68.77,70.54,Red
+1000000200,Other Providers,6037,3.56,1.04,Nurse Practitioner,1.84,52.51,16.38,Yellow
+1000000210,Other Providers,6037,1.66,4.35,Nurse Practitioner,4.96,55.6,83.91,Red
+1000000211,Other Providers,4013,1.57,2.79,Nurse Practitioner,2.57,8.0,75.53,Red
+1000000207,Other Providers,6037,2.74,2.88,Nurse Practitioner,1.6,18.09,90.71,Red
+1000000205,Other Providers,4013,1.93,2.17,Nurse Practitioner,2.96,58.64,49.33,Green
+1000000201,Other Providers,4013,1.34,1.97,Physician Assistant,4.37,63.76,64.91,Yellow
+1000000210,Other Providers,4013,4.05,1.23,Nurse Practitioner,2.47,53.95,33.85,Red
+1000000006,PCP,4013,4.38,2.93,PCP,4.07,85.2,50.48,Yellow
+1000000104,Physician Specialists,4013,3.35,4.4,Dermatology,2.36,49.88,53.14,Red

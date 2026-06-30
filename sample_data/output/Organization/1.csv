@@ -1,0 +1,37 @@
+Type,NPI,Presentation Name,Address First Line,Zip Code,City,State,County,FIPS State County Code,Provider Type,Specialty Name,Org A HMO/HMO-POS,Org B HMO/HMO-POS,Cost Score,Quality Score,FFS Utilization Score,MA Utilization Score,NPI Score Confidence
+Organization,1000000900,Hospital 0 Medical Center,Nan,32011,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,N,2.79,4.71,30.75,59.85,NA
+Organization,1000000901,Hospital 1 Medical Center,Nan,32012,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,N,3.62,3.21,96.98,98.46,NA
+Organization,1000000902,Hospital 2 Medical Center,Nan,32013,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,N,2.86,4.94,97.79,41.16,NA
+Organization,1000000903,Hospital 3 Medical Center,Nan,32014,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,Y,1.44,1.19,67.53,71.33,NA
+Organization,1000000904,Hospital 4 Medical Center,Nan,32015,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,Y,4.46,4.09,73.94,80.09,NA
+Organization,1000000905,Hospital 5 Medical Center,Nan,32016,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,Y,1.16,1.5,77.73,48.97,NA
+Organization,1000000908,Hospital 8 Medical Center,Nan,32019,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,Y,2.59,1.42,91.73,63.08,NA
+Organization,1000000900,Hospital 0 Medical Center,Nan,32011,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,N,3.88,4.61,96.32,78.2,NA
+Organization,1000000902,Hospital 2 Medical Center,Nan,32013,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,N,3.48,4.93,47.75,76.14,NA
+Organization,1000000903,Hospital 3 Medical Center,Nan,32014,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,Y,1.34,4.17,55.55,80.21,NA
+Organization,1000000904,Hospital 4 Medical Center,Nan,32015,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,Y,1.46,4.47,73.24,44.01,NA
+Organization,1000000906,Hospital 6 Medical Center,Nan,32017,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,Y,4.29,4.7,3.7,37.27,NA
+Organization,1000000907,Hospital 7 Medical Center,Nan,32018,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,Y,2.36,1.71,19.16,2.48,NA
+Organization,1000000908,Hospital 8 Medical Center,Nan,32019,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,Y,3.06,1.02,67.73,2.96,NA
+Organization,1000000903,Hospital 3 Medical Center,Nan,32014,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,Y,1.44,1.19,67.53,71.33,NA
+Organization,1000000904,Hospital 4 Medical Center,Nan,32015,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,Y,4.46,4.09,73.94,80.09,NA
+Organization,1000000905,Hospital 5 Medical Center,Nan,32016,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,Y,1.16,1.5,77.73,48.97,NA
+Organization,1000000908,Hospital 8 Medical Center,Nan,32019,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,Y,2.59,1.42,91.73,63.08,NA
+Organization,1000000909,Hospital 9 Medical Center,Nan,32020,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,N,Y,2.11,1.03,70.3,63.38,NA
+Organization,1000000903,Hospital 3 Medical Center,Nan,32014,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,Y,1.34,4.17,55.55,80.21,NA
+Organization,1000000904,Hospital 4 Medical Center,Nan,32015,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,Y,1.46,4.47,73.24,44.01,NA
+Organization,1000000906,Hospital 6 Medical Center,Nan,32017,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,Y,4.29,4.7,3.7,37.27,NA
+Organization,1000000907,Hospital 7 Medical Center,Nan,32018,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,Y,2.36,1.71,19.16,2.48,NA
+Organization,1000000908,Hospital 8 Medical Center,Nan,32019,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,Y,3.06,1.02,67.73,2.96,NA
+Organization,1000000909,Hospital 9 Medical Center,Nan,32020,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,N,Y,3.94,2.15,75.0,34.65,NA
+Organization,1000000910,Hospital 10 Medical Center,Nan,32021,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,N,Y,1.94,1.2,62.19,85.81,NA
+Organization,1000000906,Hospital 6 Medical Center,Nan,32017,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,Y,NA,NA,NA,NA,NA
+Organization,1000000907,Hospital 7 Medical Center,Nan,32018,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,Y,NA,NA,NA,NA,NA
+Organization,1000000901,Hospital 1 Medical Center,Nan,32012,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,N,NA,NA,NA,NA,NA
+Organization,1000000905,Hospital 5 Medical Center,Nan,32016,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,Y,NA,NA,NA,NA,NA
+Organization,1000000906,Hospital 6 Medical Center,Nan,32017,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,Y,NA,NA,NA,NA,NA
+Organization,1000000907,Hospital 7 Medical Center,Nan,32018,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,Y,Y,NA,NA,NA,NA,NA
+Organization,1000000910,Hospital 10 Medical Center,Nan,32021,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,N,Y,NA,NA,NA,NA,NA
+Organization,1000000911,Hospital 11 Medical Center,Nan,32022,Los Angeles,CA,Los Angeles,6037,Hospital,Hospital,N,Y,NA,NA,NA,NA,NA
+Organization,1000000905,Hospital 5 Medical Center,Nan,32016,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,Y,Y,NA,NA,NA,NA,NA
+Organization,1000000911,Hospital 11 Medical Center,Nan,32022,Maricopa,AZ,Maricopa,4013,Hospital,Hospital,N,Y,NA,NA,NA,NA,NA

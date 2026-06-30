@@ -1,0 +1,21 @@
+req_id,network_id,network_name,common_unique,base_compare,flag,npi_count
+Check_1,1_2,Org A HMO/HMO-POS,common,base_Compare_1,Cardiology,5
+Check_1,1_2,Org A HMO/HMO-POS,unique,base_Compare_1,Cardiology,3
+Check_1,1_2,Org A HMO/HMO-POS,common,base_Compare_1,Dermatology,4
+Check_1,1_2,Org A HMO/HMO-POS,unique,base_Compare_1,Dermatology,1
+Check_1,1_2,Org A HMO/HMO-POS,common,base_Compare_1,Nurse Practitioner,9
+Check_1,1_2,Org A HMO/HMO-POS,unique,base_Compare_1,Nurse Practitioner,3
+Check_1,1_2,Org A HMO/HMO-POS,common,base_Compare_1,Orthopedic Surgery,3
+Check_1,1_2,Org A HMO/HMO-POS,unique,base_Compare_1,Orthopedic Surgery,2
+Check_1,1_2,Org A HMO/HMO-POS,common,base_Compare_1,Physician Assistant,3
+Check_1,1_2,Org A HMO/HMO-POS,unique,base_Compare_1,Physician Assistant,3
+Check_1,2_2,Org B HMO/HMO-POS,common,Compare_1,Cardiology,4
+Check_1,2_2,Org B HMO/HMO-POS,unique,Compare_1,Cardiology,3
+Check_1,2_2,Org B HMO/HMO-POS,common,Compare_1,Dermatology,6
+Check_1,2_2,Org B HMO/HMO-POS,unique,Compare_1,Dermatology,2
+Check_1,2_2,Org B HMO/HMO-POS,common,Compare_1,Nurse Practitioner,8
+Check_1,2_2,Org B HMO/HMO-POS,unique,Compare_1,Nurse Practitioner,3
+Check_1,2_2,Org B HMO/HMO-POS,common,Compare_1,Orthopedic Surgery,2
+Check_1,2_2,Org B HMO/HMO-POS,unique,Compare_1,Orthopedic Surgery,1
+Check_1,2_2,Org B HMO/HMO-POS,common,Compare_1,Physician Assistant,4
+Check_1,2_2,Org B HMO/HMO-POS,unique,Compare_1,Physician Assistant,3

@@ -1,0 +1,19 @@
+state,county_name,FIPS State County Code,New Flag,Scoring Category,Quality Score,Cost Score,MA Utilization Score,FFS Utilization Score
+CA,Los Angeles,6037,PCP,High,38,20,35,44
+CA,Los Angeles,6037,PCP,Medium,30,33,13,12
+CA,Los Angeles,6037,PCP,Low,21,42,26,18
+CA,Los Angeles,6037,Physician Specialists,High,39,42,45,15
+CA,Los Angeles,6037,Physician Specialists,Medium,35,29,22,20
+CA,Los Angeles,6037,Physician Specialists,Low,6,14,27,44
+CA,Los Angeles,6037,Other Providers,High,43,10,34,5
+CA,Los Angeles,6037,Other Providers,Medium,34,17,23,36
+CA,Los Angeles,6037,Other Providers,Low,21,40,27,49
+AZ,Maricopa,4013,PCP,High,32,15,38,20
+AZ,Maricopa,4013,PCP,Medium,27,7,6,29
+AZ,Maricopa,4013,PCP,Low,10,49,42,35
+AZ,Maricopa,4013,Physician Specialists,High,37,30,3,20
+AZ,Maricopa,4013,Physician Specialists,Medium,25,45,11,25
+AZ,Maricopa,4013,Physician Specialists,Low,17,7,6,18
+AZ,Maricopa,4013,Other Providers,High,5,4,18,10
+AZ,Maricopa,4013,Other Providers,Medium,28,1,15,23
+AZ,Maricopa,4013,Other Providers,Low,48,32,44,17

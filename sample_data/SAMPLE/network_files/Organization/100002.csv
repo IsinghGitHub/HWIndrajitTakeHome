@@ -1,0 +1,19 @@
+npi,type,presentation_name,first_name,last_name,network_id,network_name,carrier_name,specialty_category,specialty_name,specialty_subspecialty,specialty_code,New Flag,city,state,zip_code,county_name,FIPS State County Code,Address First Line,Status
+1000000903,Organization,hospital 3,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Los Angeles,CA,32014,Los Angeles,6037,913 Hospital Ave,ACTIVE
+1000000904,Organization,hospital 4,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Los Angeles,CA,32015,Los Angeles,6037,914 Hospital Ave,ACTIVE
+1000000905,Organization,hospital 5,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Los Angeles,CA,32016,Los Angeles,6037,915 Hospital Ave,ACTIVE
+1000000906,Organization,hospital 6,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Los Angeles,CA,32017,Los Angeles,6037,916 Hospital Ave,ACTIVE
+1000000907,Organization,hospital 7,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Los Angeles,CA,32018,Los Angeles,6037,917 Hospital Ave,ACTIVE
+1000000908,Organization,hospital 8,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Los Angeles,CA,32019,Los Angeles,6037,918 Hospital Ave,ACTIVE
+1000000909,Organization,hospital 9,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Los Angeles,CA,32020,Los Angeles,6037,919 Hospital Ave,ACTIVE
+1000000910,Organization,hospital 10,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Los Angeles,CA,32021,Los Angeles,6037,920 Hospital Ave,ACTIVE
+1000000911,Organization,hospital 11,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Los Angeles,CA,32022,Los Angeles,6037,921 Hospital Ave,ACTIVE
+1000000903,Organization,hospital 3,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Maricopa,AZ,32014,Maricopa,4013,913 Hospital Ave,ACTIVE
+1000000904,Organization,hospital 4,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Maricopa,AZ,32015,Maricopa,4013,914 Hospital Ave,ACTIVE
+1000000905,Organization,hospital 5,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Maricopa,AZ,32016,Maricopa,4013,915 Hospital Ave,ACTIVE
+1000000906,Organization,hospital 6,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Maricopa,AZ,32017,Maricopa,4013,916 Hospital Ave,ACTIVE
+1000000907,Organization,hospital 7,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Maricopa,AZ,32018,Maricopa,4013,917 Hospital Ave,ACTIVE
+1000000908,Organization,hospital 8,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Maricopa,AZ,32019,Maricopa,4013,918 Hospital Ave,ACTIVE
+1000000909,Organization,hospital 9,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Maricopa,AZ,32020,Maricopa,4013,919 Hospital Ave,ACTIVE
+1000000910,Organization,hospital 10,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Maricopa,AZ,32021,Maricopa,4013,920 Hospital Ave,ACTIVE
+1000000911,Organization,hospital 11,,,100002,Org B HMO/HMO-POS,Org B,Hospital,Hospital,Hospital,80001,Hospital,Maricopa,AZ,32022,Maricopa,4013,921 Hospital Ave,ACTIVE

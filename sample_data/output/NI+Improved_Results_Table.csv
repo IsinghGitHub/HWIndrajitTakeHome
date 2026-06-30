@@ -1,0 +1,17 @@
+req_id,network_id,network_name,common_unique,base_compare,flag,npi_count
+Check_1,1_2,Org A HMO/HMO-POS,common,base_Compare_1,Hospital,12
+Check_1,1_2,Org A HMO/HMO-POS,unique,base_Compare_1,Hospital,6
+Check_1,1_2,Org A HMO/HMO-POS,common,base_Compare_1,Other Providers,12
+Check_1,1_2,Org A HMO/HMO-POS,unique,base_Compare_1,Other Providers,6
+Check_1,1_2,Org A HMO/HMO-POS,common,base_Compare_1,PCP,12
+Check_1,1_2,Org A HMO/HMO-POS,unique,base_Compare_1,PCP,6
+Check_1,1_2,Org A HMO/HMO-POS,common,base_Compare_1,Physician Specialists,12
+Check_1,1_2,Org A HMO/HMO-POS,unique,base_Compare_1,Physician Specialists,6
+Check_1,2_2,Org B HMO/HMO-POS,common,Compare_1,Hospital,12
+Check_1,2_2,Org B HMO/HMO-POS,unique,Compare_1,Hospital,6
+Check_1,2_2,Org B HMO/HMO-POS,common,Compare_1,Other Providers,12
+Check_1,2_2,Org B HMO/HMO-POS,unique,Compare_1,Other Providers,6
+Check_1,2_2,Org B HMO/HMO-POS,common,Compare_1,PCP,12
+Check_1,2_2,Org B HMO/HMO-POS,unique,Compare_1,PCP,6
+Check_1,2_2,Org B HMO/HMO-POS,common,Compare_1,Physician Specialists,12
+Check_1,2_2,Org B HMO/HMO-POS,unique,Compare_1,Physician Specialists,6

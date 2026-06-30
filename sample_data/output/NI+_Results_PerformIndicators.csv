@@ -1,0 +1,37 @@
+req_id,network_id,network_name,Quality Score,Cost Score,Utilization Score,New Flag,Scoring Category
+Check_1,1_2,Org A HMO/HMO-POS,3,3,2.0,Other Providers,High
+Check_1,2_2,Org B HMO/HMO-POS,3,5,1.0,Other Providers,High
+Check_1,1_2,Org A HMO/HMO-POS,6,4,3.0,PCP,High
+Check_1,2_2,Org B HMO/HMO-POS,6,5,1.0,PCP,High
+Check_1,1_2,Org A HMO/HMO-POS,7,0,2.0,Physician Specialists,High
+Check_1,2_2,Org B HMO/HMO-POS,3,2,2.0,Physician Specialists,High
+Check_1,1_2,Org A HMO/HMO-POS,5,5,7.0,Other Providers,Medium
+Check_1,2_2,Org B HMO/HMO-POS,5,3,7.0,Other Providers,Medium
+Check_1,1_2,Org A HMO/HMO-POS,5,7,9.0,PCP,Medium
+Check_1,2_2,Org B HMO/HMO-POS,5,5,9.0,PCP,Medium
+Check_1,1_2,Org A HMO/HMO-POS,2,5,5.0,Physician Specialists,Medium
+Check_1,2_2,Org B HMO/HMO-POS,8,9,8.0,Physician Specialists,Medium
+Check_1,1_2,Org A HMO/HMO-POS,5,5,4.0,Other Providers,Low
+Check_1,2_2,Org B HMO/HMO-POS,4,4,4.0,Other Providers,Low
+Check_1,1_2,Org A HMO/HMO-POS,4,4,3.0,PCP,Low
+Check_1,2_2,Org B HMO/HMO-POS,3,4,4.0,PCP,Low
+Check_1,1_2,Org A HMO/HMO-POS,2,6,4.0,Physician Specialists,Low
+Check_1,2_2,Org B HMO/HMO-POS,2,2,3.0,Physician Specialists,Low
+Check_1,1_2,Org A HMO/HMO-POS,8,2,3.0,Hospital,High
+Check_1,2_2,Org B HMO/HMO-POS,4,2,3.0,Hospital,High
+Check_1,1_2,Org A HMO/HMO-POS,1,8,8.0,Hospital,Medium
+Check_1,2_2,Org B HMO/HMO-POS,1,5,5.0,Hospital,Medium
+Check_1,1_2,Org A HMO/HMO-POS,5,4,3.0,Hospital,Low
+Check_1,2_2,Org B HMO/HMO-POS,7,5,4.0,Hospital,Low
+Check_1,,Common Counties,42,33,0.0,Hospital,High
+Check_1,,Common Counties,48,14,52.0,Other Providers,High
+Check_1,,Common Counties,70,35,73.0,PCP,High
+Check_1,,Common Counties,76,72,48.0,Physician Specialists,High
+Check_1,,Common Counties,98,51,0.0,Hospital,Low
+Check_1,,Common Counties,69,72,71.0,Other Providers,Low
+Check_1,,Common Counties,31,91,68.0,PCP,Low
+Check_1,,Common Counties,23,21,33.0,Physician Specialists,Low
+Check_1,,Common Counties,92,82,0.0,Hospital,Medium
+Check_1,,Common Counties,62,18,38.0,Other Providers,Medium
+Check_1,,Common Counties,57,40,19.0,PCP,Medium
+Check_1,,Common Counties,60,74,33.0,Physician Specialists,Medium
