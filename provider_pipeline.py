@@ -10,11 +10,31 @@ Architecture:
 
 Fixes vs originals:
   1. Dead empty-guard: load_compare_files assigned to base_ind_df on empty — fixed.
-  2. NameError if compareorgid_list empty — guarded with early return.
-  3. Swallowed exceptions — now calls emit_error + traceback.
+  2. Empty/malformed compareParentOrgId: guarded with an early return. Note this guard is
+     belt-and-suspenders — `"".split(",")` never actually yields `[]` in Python, so the
+     "NameError after the loop" failure mode described in the original audit doesn't
+     literally reproduce; the real crash on a blank compare id is a KeyError on an empty
+     network lookup key, caught below by the outer try/except instead.
+  3. Swallowed exception in extract_data (download script only) — now calls emit_error +
+     traceback. (count_data's except block already logged via traceback.print_exc() in the
+     unmodified original — that one was not actually broken.)
   4. groupby.apply Python lambda in score categorization — replaced with SQL FILTER agg.
   5. Serial parquet reads — DuckDB reads all files in one vectorised scan with pushdown.
   6. Duplicate file reads across two scripts — eliminated; data loaded once.
+  7. Organization/hospital download file: missing post-column-subset drop_duplicates() let
+     ~50% duplicate rows through — added back (see comments near col_seq_hosp/col_seq_ind
+     below), matching the original's dedup-after-column-narrowing behavior.
+  8. Market report (NI+Improved_Results_PerformIndicators.csv): original only renames
+     "MA Utilization Score" -> "Utilization Score" on the individual market frame, not the
+     org one, so Hospital Utilization Score in the Common Counties row silently sums to 0.
+     Fixed here by renaming both — see comment near mkt_org.rename above. This is an
+     intentional, disclosed output difference from the original, not a regression.
+
+Known SCOPE NOTE: the SQL-injection / hardcoded-DB-credentials risk discussed in the
+write-up describes the production SQL write path (f-string UPDATE, inline creds) as
+narrated in the assignment brief — that code is not present in this repo (the SQL write
+path in provider_count_assignment.py is stubbed out), so it's a forward-looking design
+concern for whoever builds that path, not something fixed in this file.
 """
 
 import os
@@ -323,6 +343,11 @@ def run_pipeline(filespath, base, compare, baseParentOrgId, compareParentOrgId,
         mkt_ind = mkt_ind[mkt_ind["Scoring Category"] != "Not Available"]
         mkt_org = mkt_org[mkt_org["Scoring Category"] != "Not Available"]
         mkt_ind.rename(columns={"MA Utilization Score": "Utilization Score"}, inplace=True)
+        # Original only renames this column on mkt_ind, not mkt_org. After the concat below,
+        # every Hospital/org row then has NaN here, so the groupby sum silently reports 0 for
+        # Hospital Utilization Score in the Common Counties market report on every request.
+        # Renaming both sides here is an intentional, disclosed bug fix vs. the original —
+        # it changes the numeric output for that one column/row combination.
         mkt_org.rename(columns={"MA Utilization Score": "Utilization Score"}, inplace=True)
         mkt_all = pd.concat([mkt_ind, mkt_org], ignore_index=True)
         mkt_all = mkt_all.drop(columns=["state", "county_name", "FIPS State County Code",
@@ -737,7 +762,10 @@ def run_pipeline(filespath, base, compare, baseParentOrgId, compareParentOrgId,
         col_seq_ind  = rest_ind  + payer_cols + ind_score
 
         # ---- Hospital download file ----
-        hosp_df_out = hosp_df_out.reindex(columns=col_seq_hosp)
+        # Original drops duplicates immediately after subsetting to this column set
+        # (narrowing columns can collapse rows that only differed in dropped fields);
+        # this rewrite was missing that step, which let ~50% duplicate rows through.
+        hosp_df_out = hosp_df_out.reindex(columns=col_seq_hosp).drop_duplicates()
         for col in ["Address First Line", "County", "Status"]:
             if col in hosp_df_out.columns:
                 hosp_df_out[col] = hosp_df_out[col].astype(str).str.title()
@@ -750,7 +778,8 @@ def run_pipeline(filespath, base, compare, baseParentOrgId, compareParentOrgId,
 
         # ---- Individual download file ----
         ind_only = dl_ind_df[dl_ind_df["Provider Type"] != "Hospital"].copy()
-        ind_only = ind_only.reindex(columns=col_seq_ind)
+        # Same column-subset dedup as the hospital file above, for the same reason.
+        ind_only = ind_only.reindex(columns=col_seq_ind).drop_duplicates()
 
         for col in ["First Name", "Last Name", "Presentation Name", "County",
                     "Address First Line", "Location Confidence Address level", "Status"]:

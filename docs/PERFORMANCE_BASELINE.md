@@ -215,6 +215,30 @@ diff — the README's suggested next step ("golden equivalence + unit tests... a
 rewrite matches with a documented list of intentional bug-fix diffs") is still the right
 bar for a real correctness sign-off before retiring the originals.
 
+### Cell-level audit (2026-07-01) — what the row-count check above missed
+
+Took the row-count check's own caveat seriously and diffed actual cell values, not just
+counts. Found two issues a row-count-only check can't see, both now fixed (see README's
+"Known output differences from the originals" for full detail):
+
+- **Organization/hospital download file had ~50% duplicate rows** (36 vs. 24 on the sample
+  data) — `provider_pipeline.py` was missing a `drop_duplicates()` call the original makes
+  right after subsetting to the final hospital column set. This is exactly the kind of gap
+  row-count diffing on the *aggregate count tables* doesn't catch, because it never looked
+  at the per-provider download files at all. Fixed; re-verified post-fix that both scripts
+  now produce identical row counts (25 lines incl. header) and matching content on
+  `Check_1`.
+- **Hospital Utilization Score in the market report was a pre-existing bug in the
+  original** (silently sums to 0 because only one of two market frames gets a column
+  renamed before concatenation) that the rewrite happened to fix as a side effect of
+  cleaner code, without disclosing it as a deviation. Confirmed live: original outputs
+  `0.0`, rewrite outputs real values (72/40/28) for the three Hospital/Common-Counties rows
+  on the sample data. Disclosed now; kept as the rewrite's (correct) behavior.
+
+This was a manual one-off diff, not the automated golden-equivalence suite the README's
+"What I'd do with more time" section calls for — that suite is what should run this check
+on every change going forward instead of relying on someone remembering to do it by hand.
+
 ### Updated takeaway
 
 The 2026-06-30 numbers hold up on re-run: **`provider_pipeline.py` is ~2x faster than

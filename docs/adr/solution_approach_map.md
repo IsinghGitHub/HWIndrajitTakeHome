@@ -1,3 +1,11 @@
+> **Note (2026-07-01):** this file is a near-duplicate of the problem-definition/approach
+> sections in the top-level `README.md`. `README.md` is the canonical, corrected write-up —
+> it has the 2026-07-01 corrections (NameError claim, SQL-injection scope caveat) plus the
+> Known Output Differences / Assumptions / What I'd do with more time sections this file
+> doesn't have. The corrections below were mirrored here too so this file isn't left stale,
+> but treat `README.md` as the source of truth; collapsing this duplication is on the
+> "what I'd do with more time" list.
+
 # Problem Deffinition
 
 ## What the code actually does today (per request):
@@ -10,7 +18,7 @@
 
 ## The headline problems I can already see (I'll drill into each later): 
 
-subprocess cold-start + re-importing pandas/polars/pyarrow every request; the same reference data re-read on every request and duplicated across the two scripts; joblib imported but never used (reads are sequential); row-wise .apply/groupby().apply() in hot paths; an f-string-formatted SQL UPDATE (injection); hardcoded DB/SMTP creds; bare except: swallowing failures; and a copy-paste bug where the empty-compare branch assigns to base_ind_df.
+subprocess cold-start + re-importing pandas/polars/pyarrow every request; the same reference data re-read on every request and duplicated across the two scripts; joblib imported but never used (reads are sequential); row-wise .apply/groupby().apply() in hot paths; hardcoded SMTP creds; bare except: swallowing failures; and a copy-paste bug where the empty-compare branch assigns to base_ind_df. (The SQL UPDATE-injection / DB-credentials risk is discussed separately below — it describes the brief's narrated production write path, which isn't code present in this repo.)
 
 
 ## My recommended Solution: 
@@ -78,7 +86,12 @@ Currently it is keeping it fully separate:
 
 ## Next question is : How do the results get persisted, now that one job produces both the counts (→ SQL) and the detail files? The current write path has several problems stacked together:
 
-Some of teh red flags identified:
+**Caveat added 2026-07-01**: the write path described below is narrated from the brief's
+description of production behavior, not from code present in this repo —
+`provider_count_assignment.py`'s SQL write path is stubbed out in every commit, including
+the first. Treat this as a forward-looking design risk, not a directly-observed finding.
+
+Some of teh red flags identified (as narrated in the brief, not observed in this repo's code):
 
 - SQL injection: cursor.execute("UPDATE [...] where RequestID={argument}".format(argument=id_parameter)) — id_parameter comes straight from sys.argv. The 3 INSERTs are parameterized, but this UPDATE is string-formatted.
 - No idempotency: it INSERTs, then flips status, with no guard. You just chose a queue + worker pool (Q3) — which means retries. A retried job double-inserts every row, because nothing deletes/dedupes by RequestID first.
@@ -98,7 +111,11 @@ My recommended answer:
  I also found some concrete latent bugs while reading, not hypotheticals:
 
 1. Dead empty-guard (both scripts). In load_compare_files, the if compare_ind_df.empty: branch assigns to base_ind_df, not compare_ind_df (count script line ~229, download line ~232). Copy-paste from the base loader. The intended empty-frame guard silently never applies to the compare side.
-2. NameError on empty compare list. In extract_data, final_data_ind/final_data_org are only bound inside the for compareId loop, then used after it. If compareorgid_list is empty, those names don't exist → crash. The counts script has the same shape.
+2. ~~NameError on empty compare list~~ — **corrected 2026-07-01**, see `README.md`'s
+   "Fixes vs originals" list item 2 for the full correction: the literal NameError as
+   described doesn't reproduce (`"".split(",")` never yields `[]`), the real failure mode on
+   a blank compare id is a `KeyError`, it's specific to `extract_data` (download script), and
+   `count_data` does not share this flaw the way originally claimed.
 3. Swallowed failure. extract_data's except builds error_message then... does nothing — no print, no emit_error, no return. So it returns None → main prints "Failed" with zero diagnostics, and any output files already written are left orphaned.
 4. Blanket blindness. warnings.filterwarnings("ignore") + bare except: (in send_email) hide real SettingWithCopyWarnings firing on genuine chained-assignment slices (e.g. final_data_ind_Hosp[cols] = ... and final_data_ind_spec['Unique/Common'] = ... on filtered views).
 5. Magic-number coupling. hosp_nan=[208546] hardcoded to special-case a "hospital network" — undocumented, fragile.

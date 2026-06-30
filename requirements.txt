@@ -5,3 +5,4 @@ pyarrow
 pyodbc
 requests
 joblib
+duckdb

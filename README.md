@@ -5,13 +5,29 @@ Date: 30-Jun-2026
 #### Summary: Fixes vs originals:
 
   1. Dead empty-guard: load_compare_files assigned to base_ind_df on empty — fixed.
-  2. NameError if compareorgid_list empty — guarded with early return.
-  3. Swallowed exceptions — now calls emit_error + traceback.
+  2. Empty/malformed compareParentOrgId — guarded with an early return. Correction made
+     2026-07-01 after a code-level audit: `"".split(",")` never actually returns `[]` in
+     Python, so the literal "NameError after the loop" scenario described below doesn't
+     reproduce as written; the real failure on a blank compare id is a KeyError on an empty
+     network lookup key, caught by the surrounding try/except instead. Also, this only
+     affected `extract_data` (download script) — `count_data`'s except block already logs
+     a traceback in the unmodified original, so it wasn't actually broken the same way.
+  3. Swallowed exception in `extract_data` (download script) — now calls emit_error + traceback.
   4. groupby.apply Python lambda in score categorization — replaced with SQL FILTER agg.
   5. Serial parquet reads — DuckDB reads all files in one vectorised scan with pushdown.
   6. Duplicate file reads across two scripts — eliminated; data loaded once.
+  7. Organization/hospital download file was missing a `drop_duplicates()` after subsetting
+     to its final column set, which let ~50% duplicate rows through — added back. Found via
+     a post-implementation value-level audit (2026-07-01), not caught by the row-count-only
+     equivalence check below.
+  8. Market report (`NI+Improved_Results_PerformIndicators.csv`): the original only renames
+     `MA Utilization Score` → `Utilization Score` on the individual market frame, not the
+     org one, so Hospital Utilization Score in the Common Counties row silently sums to 0.
+     This rewrite renames both — an intentional, disclosed output difference, not a bug.
 
-See the comparison here : [performance_comparison data](./docs/PERFORMANCE_BASELINE.md)
+See the comparison here : [performance_comparison data](./docs/PERFORMANCE_BASELINE.md). See
+[Known output differences from the originals](#known-output-differences-from-the-originals)
+below for items 7–8 and how they were found.
 
 ## Problem Deffinition
 
@@ -27,8 +43,9 @@ See the comparison here : [performance_comparison data](./docs/PERFORMANCE_BASEL
 
 - Subprocess cold-start + re-importing pandas/polars/pyarrow every request
 - The same reference data re-read on every request and duplicated across the two scripts 
-- Joblib imported but never used (reads are sequential); row-wise .apply/groupby().apply() in hot paths; - An f-string-formatted SQL UPDATE (injection); hardcoded DB/SMTP creds; 
+- Joblib imported but never used (reads are sequential); row-wise .apply/groupby().apply() in hot paths; hardcoded SMTP creds;
 - Bare except: swallowing failures; and a copy-paste bug where the empty-compare branch assigns to base_ind_df.
+- (The SQL UPDATE-injection / DB-credentials risk is discussed separately below — it describes the brief's narrated production write path, which isn't code present in this repo.)
 
 
 #### My recommended Solution: 
@@ -96,7 +113,16 @@ Currently it is keeping it fully separate:
 
 #### Next question is : How do the results get persisted, now that one job produces both the counts (→ SQL) and the detail files? The current write path has several problems stacked together:
 
-Some of teh red flags identified:
+**Caveat added 2026-07-01**: the SQL write path described below (the f-string UPDATE,
+`pyodbc.connect`, "pool connection" comment, etc.) is narrated from the assignment brief's
+description of production behavior ("writes results to SQL Server... Driver={SQL Server}"),
+not from code present in this repo — `provider_count_assignment.py`'s SQL write path is
+already stubbed out (`# DB stubbed out — results are written to ./sample_data/output/
+instead`) in every commit, including the first. So this is a forward-looking design risk for
+whoever builds that write path against the real production code, not a finding I directly
+observed by reading the given scripts.
+
+Some of teh red flags identified (as narrated in the brief, not observed in this repo's code):
 
 - SQL injection: cursor.execute("UPDATE [...] where RequestID={argument}".format(argument=id_parameter)) — id_parameter comes straight from sys.argv. The 3 INSERTs are parameterized, but this UPDATE is string-formatted.
 - No idempotency: it INSERTs, then flips status, with no guard. You just chose a queue + worker pool (Q3) — which means retries. A retried job double-inserts every row, because nothing deletes/dedupes by RequestID first.
@@ -116,7 +142,7 @@ My recommended answer:
 I also found some concrete latent bugs while reading, not hypotheticals:
 
 1. Dead empty-guard (both scripts). In load_compare_files, the if compare_ind_df.empty: branch assigns to base_ind_df, not compare_ind_df (count script line ~229, download line ~232). Copy-paste from the base loader. The intended empty-frame guard silently never applies to the compare side.
-2. NameError on empty compare list. In extract_data, final_data_ind/final_data_org are only bound inside the for compareId loop, then used after it. If compareorgid_list is empty, those names don't exist → crash. The counts script has the same shape.
+2. ~~NameError on empty compare list~~ — **corrected 2026-07-01**: I'd originally written this as "In extract_data, final_data_ind/final_data_org are only bound inside the for compareId loop, then used after it. If compareorgid_list is empty, those names don't exist → crash. The counts script has the same shape." A code-level audit found two things wrong with that: (a) `compareorgid_list` can't actually be `[]` via the documented CLI — `"".split(",")` returns `['']`, not `[]` — so this exact NameError doesn't reproduce; the real crash on a blank compare id is a `KeyError` on an empty network-lookup key, in `extract_data` only. (b) `count_data` does **not** have the same shape — `final_data_ind`/`final_data_org` there are reassigned after the loop from frames populated before it, so there's no analogous crash, and its except block already prints a traceback in the unmodified original. The practical takeaway (download script can fail with zero diagnostics on bad/empty compare input) still held and is fixed in `provider_pipeline.py`, just via a different mechanism (an outer try/except that emits a structured error) than originally described.
 3. Swallowed failure. extract_data's except builds error_message then... does nothing — no print, no emit_error, no return. So it returns None → main prints "Failed" with zero diagnostics, and any output files already written are left orphaned.
 4. Blanket blindness. warnings.filterwarnings("ignore") + bare except: (in send_email) hide real SettingWithCopyWarnings firing on genuine chained-assignment slices (e.g. final_data_ind_Hosp[cols] = ... and final_data_ind_spec['Unique/Common'] = ... on filtered views).
 5. Magic-number coupling. hosp_nan=[208546] hardcoded to special-case a "hospital network" — undocumented, fragile.
@@ -154,6 +180,85 @@ Outputs, written under `./sample_data/output/`:
 - `HOSP_NAN_NETWORKS = {208546}` is carried over from the original on purpose: that one network has no Organization (hospital) data source at all, so the pipeline writes a blank placeholder row for it instead of a hospital count of 0 — reporting an actual zero would read as "this network has no hospitals," which isn't the same thing as "we have no data for it."
 - Found and fixed one real bug while porting: the score-cleanup step ran `Quality Score Confidence` (a Green/Yellow/Red category, not a number) through `pd.to_numeric()` before filling blanks, which silently turned every row's confidence value to `"NA"`. Fixed by pulling it out of the numeric-coercion pass. Reran against the seeded dummy data afterward and confirmed real Green/Yellow/Red values now come through instead of 100% `NA`.
 - The aggregate CSVs are now named `NI+Improved_Results_*.csv` instead of the originals' `NI+_Results_*.csv` — same three tables, new filenames, worth double-checking nothing downstream is still looking for the old names.
+- A post-implementation value-level audit (2026-07-01) found and fixed two issues the row-count-only equivalence check in `PERFORMANCE_BASELINE.md` had missed — see the next section.
+
+## Known output differences from the originals
+
+The "row counts match exactly" equivalence claim in `PERFORMANCE_BASELINE.md` was true, but
+only at row-count granularity. A follow-up audit diffed actual cell values and found:
+
+1. **Hospital Utilization Score in the market report (intentional fix, now disclosed)** —
+   the original only renames `MA Utilization Score` → `Utilization Score` on the individual
+   market frame (`mkt_ind`), not the org one (`mkt_org`). After the two are concatenated,
+   every Hospital row has `NaN` there, so `groupby().agg({"Utilization Score": "sum"})`
+   silently reports `0.0` for Hospital Utilization Score on every Common Counties row in
+   `NI+_Results_PerformIndicators.csv`. `provider_pipeline.py` renames both sides, so the
+   same rows show real values (e.g. 72/40/28 instead of 0.0/0.0/0.0 on the sample data).
+   This is a deliberate, disclosed bug fix — the rewrite's numbers are correct, the
+   original's are silently wrong — but it does mean the two outputs are not byte-identical
+   on this column.
+2. **Organization/hospital download file had ~50% duplicate rows (real regression, now
+   fixed)** — the original calls `drop_duplicates()` immediately after subsetting to the
+   final hospital column set (narrowing columns can collapse rows that only differed in a
+   dropped field); `provider_pipeline.py` was reindexing to the same column set but skipping
+   that dedup call, producing 36 rows where the original produced 24 on the sample data.
+   Fixed by adding the same `drop_duplicates()` call back in (see `provider_pipeline.py`,
+   the `hosp_df_out`/`ind_only` reindex lines). Verified after the fix: both scripts now
+   produce identical row counts and matching content on `Check_1` (sample data), modulo one
+   pre-existing, separately-disclosed `"Not Available"` vs `"NA"` string difference (the
+   original has a case-mismatch bug — `"Not available"` vs `"Not Available"` — that leaves
+   some rows unmatched; the rewrite's cleaner code path always normalizes to `"NA"`).
+
+Net effect: a real cell-by-cell golden diff (the bar `PERFORMANCE_BASELINE.md` itself names
+as the right one) is what surfaced both of these — row-count checks alone weren't enough.
+
+## Assumptions
+
+- The provided `sample_data/SAMPLE` tree and `generate_dummy_data.py` output are
+  representative in *shape* (file layout, column names/types, the specialty-code exclusion
+  list, the `clientId` branching values `[45, 5, 8]`) of production data, even though volumes
+  are obviously much smaller. Performance numbers in `PERFORMANCE_BASELINE.md` should be read
+  as directional, not as a production capacity estimate.
+- `HOSP_NAN_NETWORKS = {208546}` and the `clientId`-based column-set branching are treated as
+  real, intentional business rules to preserve as-is, not as legacy cruft to clean up —
+  I don't have the business context to know whether other networks/clients need similar
+  special-casing, so I carried these forward unchanged rather than generalizing them.
+- The brief's description of the production write path (SQL Server INSERT/UPDATE, SMTP
+  email) is accurate even though that code isn't present in this repo's scripts (the SQL
+  write path is stubbed out in every commit). My recommendations for that path (parameterized,
+  transactional, idempotent, pooled, secrets out of source) are therefore design
+  recommendations against the brief's narrative, not fixes verified against running code.
+- "Counts and downloads are always requested together" is the assumption behind choosing
+  Option A (one job, two output builders) over Option B (two jobs, shared materialized
+  layer) — see the "How do we handle the two outputs" section above. If download is actually
+  an on-demand, separate user action, Option B is the better fit and the architecture
+  decision should be revisited.
+
+## What I'd do with more time
+
+- **Golden equivalence test suite.** Bake the cell-level diffing I did manually on
+  2026-07-01 into an automated test: run both the originals and `provider_pipeline.py`
+  against the seeded dummy data, diff every output file cell-by-cell, and assert equality
+  except for a maintained allowlist of intentional, documented diffs (the Utilization Score
+  fix above). This is the single highest-leverage next step — it's what would have caught
+  both issues above automatically instead of via a manual audit.
+- **Unit tests** for the pieces most likely to silently drift: common/unique provider
+  classification, score categorization thresholds (High/Medium/Low), and the `clientId`
+  column-branching logic, independent of the end-to-end golden diff.
+- **Build the persistent worker + result cache** flagged as unchecked in
+  `PERFORMANCE_BASELINE.md` — the dominant remaining cost on real production volumes is
+  still interpreter/library import time and re-reading reference data per request, not the
+  DuckDB business logic itself.
+- **Build and wire in the parameterized/transactional/idempotent SQL write path** (and the
+  email step) that `provider_pipeline.py` deliberately left out per ADR 0001 — required
+  before this can fully replace `provider_count_assignment.py` in production.
+- **Deduplicate this write-up.** `README.md` and `docs/adr/solution_approach_map.md` are
+  near-duplicates of each other; worth collapsing into one canonical source before this goes
+  much further, so corrections like the ones made on 2026-07-01 don't need to be applied
+  twice.
+- Re-run the import-time profiling with `duckdb` correctly declared in `requirements.txt`
+  (added 2026-07-01 — it was missing, so a clean `pip install -r requirements.txt` couldn't
+  actually run `provider_pipeline.py`) to get an accurate cold-import baseline.
 
 See [CONTEXT.md](./docs/CONTEXT.md) for the terms used above (base/compare network, common/unique provider, etc.).
 
